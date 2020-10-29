@@ -1,0 +1,12 @@
+@(controller:de.htwg.se.scrabble.controller.controllerComponent.ControllerInterface)
+
+@size= @{ controller.gridSize }
+@test = @{controller.please_delete_me }
+
+@main("HTWG Scrabble") {
+    <div class="gamecontainer">
+    @for(row <- 0 until size){
+        <p>@test </p>
+    }
+    </div>
+}
