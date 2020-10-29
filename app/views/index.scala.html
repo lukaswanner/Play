@@ -2,86 +2,40 @@
 
   @main("HTWG Scrabble") {
 
-    <h1>About Scrabble</h1>
+  <h1>Über Scrabble</h1>
 
+  <h2>Sinn des Spiels</h2>
+
+  <p>
+      Scrabble ist ein Buchstabenspiel, an dem sich zwei, drei oder vier Spieler beteiligen können.<br>
+      Aufgabe ist, aus Buchstabensteinen mit unterschiedlichen Werten Wörter<br>
+      zusammenzusetzen und so auszulegen, dass sie nach Art eines Kreuzworträtsels mit bereits<br>
+      platzierten Wörtern in Verbindung stehen. Es darf jeweils nur ein Wort in einer Richtung<br>
+      gelegt werden. Wer am Ende die meisten Punkte hat, gewinnt.
+
+  </p>
+
+  <h2> Bestandteile des Spiels</h2>
+  <h3> <u>Die Buchstabensteine </u> </h3>
     <p>
-      Scrabble is a logic-based, combinatorial number-placement puzzle.
-      The objective is to fill a 9×9 grid with digits so that each column, each row, and
-      each of the nine 3×3 subgrids that compose the grid (also called "houses", "blocks",
-      or "regions") contains all of the digits from 1 to 9. The puzzle setter provides a
-      partially completed grid, which for a well-posed puzzle has a single solution.
+      Das Spiel umfasst 100 Buchstabensteine.<br>
+      Jeder Buchstabenstein hat einen bestimmten Wert, der jeweils unten rechts auf dem<br>
+      Buchstabenstein angegeben ist.
     </p>
-
-      <a href="scrabble.scala.html"> das ist ein test </a>
-
+  <h3> <u>Die Blankosteine </u> </h3>
     <p>
-      Completed games are always a type of Latin square with an additional constraint on
-      the contents of individual regions. For example, the same single integer may not appear
-      twice in the same row, column, or any of the nine 3×3 subregions of the 9x9 playing board.
+      Die beiden Blankosteine haben die Funktion von Jokern. Sie können beliebig für jeden<br>
+      gewünschten Buchstaben eingesetzt werden, nicht jedoch als ‚ß’. Der Spieler muss<br>
+      ansagen, welchen Buchstaben der Blankostein ersetzt. Dieser behält seine Bedeutung<br>
+      während des ganzen Spiels bei.<br>
+      Der Blankostein hat einen Wert von null Punkten.<br>
+      Ein auf dem Spielbrett platzierter Blankostein darf nicht ausgetauscht werden.
     </p>
-
+  <h3> <u>Das Spielbrett </u> </h3>
     <p>
-      The following image shows a typical Scrabble puzzle. <br>
-      <!--<img src=@routes.Assets.versioned("images/Scrabble_Puzzle.png")>-->
-    </p>
-
-    <p>
-      The solution to this puzzle is shown below. <br>
-      <!--<img src=@routes.Assets.versioned("images/Scrabble_Puzzle_solved.png")>-->
-    </p>
-
-    <h1>Historic Background</h1>
-
-    <p>
-      Number puzzles appeared in newspapers in the late 19th century, when French puzzle setters
-      began experimenting with removing numbers from magic squares. Le Siècle, a Paris daily,
-      published a partially completed 9×9 magic square with 3×3 subsquares on November 19, 1892.
-      It was not a Scrabble because it contained double-digit numbers and required arithmetic rather
-      than logic to solve, but it shared key characteristics: each row, column and subsquare added
-      up to the same number.
-    </p>
-
-    <p>
-      On July 6, 1895, Le Siècle's rival, La France, refined the puzzle so that it was almost a
-      modern Scrabble. It simplified the 9×9 magic square puzzle so that each row, column, and broken
-      diagonals contained only the numbers 1–9, but did not mark the subsquares. Although they are
-      unmarked, each 3×3 subsquare does indeed comprise the numbers 1–9 and the additional constraint
-      on the broken diagonals leads to only one solution.
-    </p>
-
-    <p>
-      These weekly puzzles were a feature of French newspapers such as L'Echo de Paris for about a
-      decade, but disappeared about the time of World War I.
-    </p>
-
-    <p>
-      The modern Scrabble was most likely designed anonymously by Howard Garns, a 74-year-old retired
-      architect and freelance puzzle constructor from Connersville, Indiana, and first published in
-      1979 by Dell Magazines as Number Place (the earliest known examples of modern Scrabble).
-      Garns's name was always present on the list of contributors in issues of Dell Pencil Puzzles
-      and Word Games that included Number Place, and was always absent from issues that did not.
-      He died in 1989 before getting a chance to see his creation as a worldwide phenomenon.
-    </p>
-
-    <p>
-      The puzzle was introduced in Japan by Nikoli in the paper Monthly Nikolist in April 1984 as
-      Sūji wa dokushin ni kagiru, which also can be translated as "the digits must be single" or
-      "the digits are limited to one occurrence" (In Japanese, dokushin means an "unmarried person").
-      At a later date, the name was abbreviated to Scrabble by Maki Kaji, taking only the first kanji
-      of compound words to form a shorter version. "Scrabble" is a registered trademark in Japan and
-      the puzzle is generally referred to as Number Place or, more informally, a portmanteau of the
-      two words, Num(ber) Pla(ce). In 1986, Nikoli introduced two innovations:
-  <ul>
-    <li>the number of givens was restricted to no more than 32, and </li>
-    <li>puzzles became "symmetrical" (meaning the givens were distributed in rotationally symmetric
-      cells).</li>
-  </ul>
-    </p>
-
-    <p>
-      The Times began featuring Scrabble in late 2004 after a successful appearance in a local US newspaper,
-      from the efforts of Wayne Gould, and rapidly spread to other newspapers as a regular feature.
-      Gould devised a computer program to produce unique puzzles rapidly.
+      Das Spielbrett besteht aus 15 x 15 Quadraten, die durch waagerechte und senkrechte Linien<br>
+      voneinander getrennt sind. Es gibt auf dem Spielbrett farblich abgesetzte Felder mit<br>
+      unterschiedlichen Prämienwerten (s. 4., d).
     </p>
 
 

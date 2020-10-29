@@ -15,7 +15,6 @@ class HomeController @Inject()(val controllerComponents: ControllerComponents) e
 
   val gamecontroller = Scrabble.controller
 
-  def text = gamecontroller.gameToString
 
   /**
    * Create an Action to render an HTML page.
@@ -30,6 +29,11 @@ class HomeController @Inject()(val controllerComponents: ControllerComponents) e
 
   def scrabble() = Action { implicit request: Request[AnyContent] =>
     Ok(views.html.scrabble(gamecontroller))
+  }
+
+  def newGrid() = Action { implicit request: Request[AnyContent] =>
+    gamecontroller.init
+    Ok(gamecontroller.gameToString)
   }
 
   def switchHands(x:Int,y:Int,index:Int) = Action { implicit request: Request[AnyContent] =>
