@@ -1,5 +1,6 @@
 package controllers
 
+import de.htwg.se.scrabble.Scrabble
 import javax.inject._
 import play.api._
 import play.api.mvc._
@@ -11,6 +12,10 @@ import play.api.mvc._
 @Singleton
 class HomeController @Inject()(val controllerComponents: ControllerComponents) extends BaseController {
 
+
+  val gamecontroller = Scrabble.controller
+  def text = gamecontroller.gameToString
+
   /**
    * Create an Action to render an HTML page.
    *
@@ -19,6 +24,6 @@ class HomeController @Inject()(val controllerComponents: ControllerComponents) e
    * a path of `/`.
    */
   def index() = Action { implicit request: Request[AnyContent] =>
-    Ok(views.html.index())
+    Ok(text)
   }
 }
