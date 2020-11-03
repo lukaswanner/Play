@@ -32,11 +32,16 @@ class HomeController @Inject()(val controllerComponents: ControllerComponents) e
 
   def newGrid() = Action { implicit request: Request[AnyContent] =>
     gamecontroller.init
-    Ok(gamecontroller.gameToString)
+    Ok(views.html.scrabble(gamecontroller))
   }
 
   def setGrid(x:Int,y:Int,index:Int) = Action { implicit request: Request[AnyContent] =>
     gamecontroller.setGrid(x,y,index)
-    Ok(gamecontroller.gameToString)
+    Ok(views.html.scrabble(gamecontroller))
+  }
+
+  def submit() = Action { implicit request: Request[AnyContent] =>
+    gamecontroller.endTurn
+    Ok(views.html.scrabble(gamecontroller))
   }
 }
