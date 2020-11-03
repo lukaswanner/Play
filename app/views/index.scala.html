@@ -1,43 +1,96 @@
 @()
 
-  @main("HTWG Scrabble") {
+@main("HTWG Scrabble") {
 
-  <h1>Über Scrabble</h1>
-
-  <h2>Sinn des Spiels</h2>
-
-  <p>
-      Scrabble ist ein Buchstabenspiel, an dem sich zwei, drei oder vier Spieler beteiligen können.<br>
-      Aufgabe ist, aus Buchstabensteinen mit unterschiedlichen Werten Wörter<br>
-      zusammenzusetzen und so auszulegen, dass sie nach Art eines Kreuzworträtsels mit bereits<br>
-      platzierten Wörtern in Verbindung stehen. Es darf jeweils nur ein Wort in einer Richtung<br>
-      gelegt werden. Wer am Ende die meisten Punkte hat, gewinnt.
-
-  </p>
-
-  <h2> Bestandteile des Spiels</h2>
-  <h3> <u>Die Buchstabensteine </u> </h3>
+    <h1>Math Scrabble</h1>
+    <img src=@routes.Assets.versioned("images/MathScrabble.jpg") width="600px">
     <p>
-      Das Spiel umfasst 100 Buchstabensteine.<br>
-      Jeder Buchstabenstein hat einen bestimmten Wert, der jeweils unten rechts auf dem<br>
-      Buchstabenstein angegeben ist.
-    </p>
-  <h3> <u>Die Blankosteine </u> </h3>
-    <p>
-      Die beiden Blankosteine haben die Funktion von Jokern. Sie können beliebig für jeden<br>
-      gewünschten Buchstaben eingesetzt werden, nicht jedoch als ‚ß’. Der Spieler muss<br>
-      ansagen, welchen Buchstaben der Blankostein ersetzt. Dieser behält seine Bedeutung<br>
-      während des ganzen Spiels bei.<br>
-      Der Blankostein hat einen Wert von null Punkten.<br>
-      Ein auf dem Spielbrett platzierter Blankostein darf nicht ausgetauscht werden.
-    </p>
-  <h3> <u>Das Spielbrett </u> </h3>
-    <p>
-      Das Spielbrett besteht aus 15 x 15 Quadraten, die durch waagerechte und senkrechte Linien<br>
-      voneinander getrennt sind. Es gibt auf dem Spielbrett farblich abgesetzte Felder mit<br>
-      unterschiedlichen Prämienwerten (s. 4., d).
+        "Math Scrabble" (or "Number Scrabble") is a game based on normal Scrabble, but you make equations instead of words.<br>
+        The letter tiles used in Scrabble are replaced with numbers and operators.<br>
+        You can use a standard scrabble set to play number scrabble by writing the proper numbers and operators on the back of the standard scrabble tiles.
     </p>
 
+    <h3><u><a href="@routes.HomeController.scrabble()">PLAY &gt;&gt;</a></u></h3>
 
+    <h2>The Rules</h2>
+    <p>
+<ul>
+    <li>Except as noted, game play is similar to normal Scrabble</li>
+    <li>On each turn, players must make or add to a valid and correct equation.</li>
+    <ul type="circle"><li>example: '3+3=6'</li></ul>
+    <li>Players keep <strong>9 tiles</strong> in their hand at all times, not 7 as in normal Scrabble</li>
 
-  }
+    <li>You can add to an existing equation on one side or both sides in a single turn.</li>
+    <ul type="circle"><li>example: you can add to both ends of '3+3=6' in a single turn to make '63+3=66'</li></ul>
+
+    <li>You may only use one new '=' sign per turn</li>
+    <li>Equations can have multiple equal parts.</li>
+    <ul type="circle"><li>example: '2x2=1+3=4=5-1'</li></ul>
+    <li>Redundant equations are valid</li>
+    <ul type="circle"><li>example: '1-1+1-1=0=0+0'</li></ul>
+    <li>The '-' may be used either as an operator or before a number indicate its sign.</li>
+    <ul type="circle"><li>example: '-3=5-8'</li>
+        <li>example: '3=-5--8'</li></ul>
+    <li>You may not use leading '+' signs or leading '0' in front of a number</li>
+    <li>In normal scrabble, you can place one word alongside another if they create a valid cross-word <br>
+        Here, a 2-character sequence can never be an equation so this generally is not possible.</li>
+</ul>
+    <h2>Score</h2>
+    <table border="1">
+        <tbody>
+            <tr>
+                <td>Number/Operator</td><td>Score value</td>
+            </tr>
+            <tr>
+                <td>1</td><td>1</td>
+            </tr>
+            <tr>
+                <td>2</td><td>1</td>
+            </tr>
+            <tr>
+                <td>3</td><td>2</td>
+            </tr>
+            <tr>
+                <td>4</td><td>2</td>
+            </tr>
+            <tr>
+                <td>5</td><td>3</td>
+            </tr>
+            <tr>
+                <td>6</td><td>2</td>
+            </tr>
+            <tr>
+                <td>7</td><td>4</td>
+            </tr>
+            <tr>
+                <td>8</td><td>2</td>
+            </tr>
+            <tr>
+                <td>9</td><td>2</td>
+            </tr>
+            <tr>
+                <td>0</td><td>1</td>
+            </tr>
+            <tr>
+                <td>+ (add)</td><td>1</td>
+            </tr>
+            <tr>
+                <td>- (subtract)</td><td>1</td>
+            </tr>
+            <tr>
+                <td>× (multiply)</td><td>2</td>
+            </tr>
+            <tr><td>/ (divide)</td><td>3</td>
+            </tr>
+            <tr>
+                <td>= (equals)</td><td>1</td>
+            </tr>
+            <tr>
+                <td>blank</td><td>0</td>
+            </tr>
+        </tbody>
+    </table>
+    <p>Content and image by dan <a href="https://www.instructables.com/Number-Scrabble-The-Game-aka-Math-Scrabble/">
+        Number Scrabble - the Game (aka: Math Scrabble)</a></p>
+    </ul>
+}
