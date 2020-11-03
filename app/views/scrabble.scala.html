@@ -1,8 +1,9 @@
 @(controller:de.htwg.se.scrabble.controller.controllerComponent.ControllerInterface)
-
 @size = @{ controller.gridSize }
 @game= @{ controller.gameToString }
-@grid = @{ controller.getGameField.grid}
+@grid = @{ controller.getGameField.grid }
+@currPlayer = @{ controller.gameStatus.currPlayer() }
+@playerlist = @{ controller.getGameField.playerList }
 
 @main("HTWG Scrabble") {
     <div class="gamecontainer">
@@ -11,12 +12,12 @@
                 @for(row <- 0 until size) {
                     <tr>
                         @for(col <- 0 until size) {
-                            <td> </td>
+                            <td>@grid.cell(row,col) </td>
                         }
                     </tr>
                 }
             </tbody>
         </table>
-        @game
+        @playerlist(currPlayer)
     </div>
 }
