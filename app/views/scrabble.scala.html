@@ -1,8 +1,8 @@
 @(controller:de.htwg.se.scrabble.controller.controllerComponent.ControllerInterface)
 
 @size = @{ controller.gridSize }
-@game= @{ controller.gameToString }
 @grid = @{ controller.getGameField.grid }
+@pile = @{ controller.getGameField.pile }
 @currPlayer = @{ controller.gameStatus.currPlayer() }
 @playerlist = @{ controller.getGameField.playerList }
 @hand = @{playerlist(currPlayer).hand}
@@ -17,12 +17,12 @@
                     <div class="cell label">@i</div>
                 }
                 </div>
-                @for(row <- 0 until size) {
+                @for(col <- 0 until size) {
                     <div class="row">
-                        <div class="cell label">@(row+1)</div>
-                        @for(col <- 0 until size) {
+                        <div class="cell label">@(col+1)</div>
+                        @for(row <- 0 until size) {
                             @if(grid.cell(row,col).isSet) {
-                                @card(grid.cell(row,col).card, isCell = true)
+                                @card(grid.cell(row,col).card, addedClass = "cell")
                             } else {
                                 @if(grid.cell(row,col).isNormal) {
                                     <div class="cell normal">@grid.cell(row,col)</div>
@@ -36,13 +36,40 @@
                     </div>
                 }
             </div>
-            <div class="control">
-                <div class="hand">
-                    @for(c <- hand){
-                        @card(c, isCell = false)
-                    }
+            <div class="hand">
+                @for(c <- hand){
+                    @card(c, addedClass = "")
+                }
+            </div>
+        </div>
+        <div class="control">
+            <a href="@routes.HomeController.index()">
+                <div class="home">
+                    <span id="title">Math Scrabble </span><i class="fa fa-home w3-xxxlarge"></i>
                 </div>
-@*                <a href="@routes.HomeController.submit()"><button>Submit</button></a>*@
+            </a>
+            <div class="info">
+                <div>
+                    @if(currPlayer equals "A") {
+                        <div class="score active">
+                    } else {
+                        <div class="score">
+                    }
+                        Player A: <span class="playerpoint">@playerlist("A").point</span>
+                    </div>
+                    @if(currPlayer equals "B") {
+                        <div class="score active">
+                    } else {
+                        <div class="score">
+                    }
+                        Player B: <span class="playerpoint">@playerlist("B").point</span>
+                    </div>
+                </div>
+                cards in stack: @pile.size <br>
+                <a href="@routes.HomeController.newGrid()"><button>new game</button></a>
+                <a href="@routes.HomeController.submit()"><button>switch cards</button></a>
+                <a href="@routes.HomeController.submit()"><button>Set</button></a>
+                <a href="@routes.HomeController.submit()"><button>Submit</button></a>
             </div>
         </div>
     </div>
