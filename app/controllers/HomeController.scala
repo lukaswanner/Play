@@ -12,9 +12,8 @@ import play.api.mvc._
 @Singleton
 class HomeController @Inject()(val controllerComponents: ControllerComponents) extends BaseController {
 
-
   val gamecontroller = Scrabble.controller
-
+  def text = gamecontroller.gameToString
 
   /**
    * Create an Action to render an HTML page.
@@ -33,12 +32,16 @@ class HomeController @Inject()(val controllerComponents: ControllerComponents) e
 
   def newGrid() = Action { implicit request: Request[AnyContent] =>
     gamecontroller.init
-    Ok(gamecontroller.gameToString)
+    Ok(views.html.scrabble(gamecontroller))
   }
 
-  def switchHands(x:Int,y:Int,index:Int) = Action { implicit request: Request[AnyContent] =>
+  def setGrid(x:Int,y:Int,index:Int) = Action { implicit request: Request[AnyContent] =>
     gamecontroller.setGrid(x,y,index)
-    Ok(gamecontroller.gameToString)
+    Ok(views.html.scrabble(gamecontroller))
   }
 
+  def submit() = Action { implicit request: Request[AnyContent] =>
+    gamecontroller.endTurn
+    Ok(views.html.scrabble(gamecontroller))
+  }
 }
