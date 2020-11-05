@@ -5,28 +5,45 @@
 @grid = @{ controller.getGameField.grid }
 @currPlayer = @{ controller.gameStatus.currPlayer() }
 @playerlist = @{ controller.getGameField.playerList }
+@hand = @{playerlist(currPlayer).hand}
 
 @main("HTWG Scrabble") {
-    <div class="gamecontainer">
-        <table border="1">
-            <tbody>
-                <tr>
-                    <th> </th>
-                    @for(i <- 0 until size) {
-                        <th>@i</th>
-                    }
-                </tr>
-                @for(row <- 0 until size) {
-                    <tr>
-                        <td>@row</td>
-                        @for(col <- 0 until size) {
-                            <td>@grid.cell(row,col)</td>
-                        }
-                    </tr>
+    <div class="flex">
+        <div class="gamecontainer">
+            <div class="grid">
+                <div class="row">
+                    <div class="cell label"> </div>
+                @for(i <- 1 until size+1) {
+                    <div class="cell label">@i</div>
                 }
-            </tbody>
-        </table>
-        @playerlist(currPlayer)
-        <a href="@routes.HomeController.submit()"><button>Submit</button></a>
+                </div>
+                @for(row <- 0 until size) {
+                    <div class="row">
+                        <div class="cell label">@(row+1)</div>
+                        @for(col <- 0 until size) {
+                            @if(grid.cell(row,col).isSet) {
+                                <div class="cell card">@grid.cell(row,col)</div>
+                            } else {
+                                @if(grid.cell(row,col).isNormal) {
+                                    <div class="cell normal">@grid.cell(row,col)</div>
+                                } else {@if(grid.cell(row,col).isDouble) {
+                                    <div class="cell double">@grid.cell(row,col)</div>
+                                } else {
+                                    <div class="cell triple">@grid.cell(row,col)</div>
+                                }
+                            }}
+                        }
+                    </div>
+                }
+            </div>
+            <div class="control">
+                <div class="hand">
+                    @for(card <- hand){
+                            <div class="card">@card.toString</div>
+                    }
+                </div>
+@*                <a href="@routes.HomeController.submit()"><button>Submit</button></a>*@
+            </div>
+        </div>
     </div>
 }
