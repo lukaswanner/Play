@@ -2,7 +2,7 @@ anguage: scala
 scala:
   - 2.13.3
 jdk:
-  - oraclejdk11
+  - oraclejdk8
 cache:
   directories:
     - "$HOME/.ivy2/cache"
