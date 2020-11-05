@@ -1,96 +1,129 @@
 @()
 
 @main("HTWG Scrabble") {
+    <!-------------------Navbar----------------->
+    <section id="user-info">
+        <div class="nav-bar">
+            <nav class="navbar navbar-expand-lg navbar-light navbar-fixed-top" style="background-color: #EFEFFB;">
+                    <!----hier oben wurde Hintergrundfarbe geändert von navbar---->
+                <a class="navbar-brand" href="#"> <img src="@routes.Assets.versioned("images/favicon.png")"></a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span> <!---icon für menü--->
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+                    <div class="navbar-nav ml-auto"> <!--ml-auto verschiebt nach rechts----->
+                        <a class="nav-item nav-link active" href="#">Home</a>
+                        <a class="nav-item nav-link " href="#mitte">Test</a>
+                        <a class="nav-item nav-link " href="#mitte">Test1</a>
+                        <a class="nav-item nav-link " href="@routes.HomeController.scrabble()">play</a>
+                    </div>
+                </div>
+            </nav>
+        </div>
+    </section>
+        <!-------------------page----------------->
+    <header id = "header1">
+        <h1>Math Scrabble</h1>
+    </header>
+    <div id = "inhalt">
+        <div id = "scrabblePic">
+            <img src=@routes.Assets.versioned("images/MathScrabble.jpg") width="600px">
+        </div>
+        <p id = "description">
+            "Math Scrabble" (or "Number Scrabble") is a game based on normal Scrabble, but you make equations instead of words.<br>
+            The letter tiles used in Scrabble are replaced with numbers and operators.<br>
+            You can use a standard scrabble set to play number scrabble by writing the proper numbers and operators on the back of the standard scrabble tiles.
+        </p>
 
-    <h1>Math Scrabble</h1>
-    <img src=@routes.Assets.versioned("images/MathScrabble.jpg") width="600px">
-    <p>
-        "Math Scrabble" (or "Number Scrabble") is a game based on normal Scrabble, but you make equations instead of words.<br>
-        The letter tiles used in Scrabble are replaced with numbers and operators.<br>
-        You can use a standard scrabble set to play number scrabble by writing the proper numbers and operators on the back of the standard scrabble tiles.
-    </p>
+        <h3 id = "playButton"><u><a href="@routes.HomeController.scrabble()">PLAY &gt;&gt;</a></u></h3>
 
-    <h3><u><a href="@routes.HomeController.scrabble()">PLAY &gt;&gt;</a></u></h3>
+        <h2 id = "rulesHeadline">The Rules</h2>
+        <p>
+    <div class = "wrapper">
+        <ul id = "rulesList">
+            <li>Except as noted, game play is similar to normal Scrabble</li>
+            <li>On each turn, players must make or add to a valid and correct equation.</li>
+            <ul type="circle"><li>example: '3+3=6'</li></ul>
+            <li>Players keep <strong>9 tiles</strong> in their hand at all times, not 7 as in normal Scrabble</li>
 
-    <h2>The Rules</h2>
-    <p>
-<ul>
-    <li>Except as noted, game play is similar to normal Scrabble</li>
-    <li>On each turn, players must make or add to a valid and correct equation.</li>
-    <ul type="circle"><li>example: '3+3=6'</li></ul>
-    <li>Players keep <strong>9 tiles</strong> in their hand at all times, not 7 as in normal Scrabble</li>
+            <li>You can add to an existing equation on one side or both sides in a single turn.</li>
+            <ul type="circle"><li>example: you can add to both ends of '3+3=6' in a single turn to make '63+3=66'</li></ul>
 
-    <li>You can add to an existing equation on one side or both sides in a single turn.</li>
-    <ul type="circle"><li>example: you can add to both ends of '3+3=6' in a single turn to make '63+3=66'</li></ul>
-
-    <li>You may only use one new '=' sign per turn</li>
-    <li>Equations can have multiple equal parts.</li>
-    <ul type="circle"><li>example: '2x2=1+3=4=5-1'</li></ul>
-    <li>Redundant equations are valid</li>
-    <ul type="circle"><li>example: '1-1+1-1=0=0+0'</li></ul>
-    <li>The '-' may be used either as an operator or before a number indicate its sign.</li>
-    <ul type="circle"><li>example: '-3=5-8'</li>
-        <li>example: '3=-5--8'</li></ul>
-    <li>You may not use leading '+' signs or leading '0' in front of a number</li>
-    <li>In normal scrabble, you can place one word alongside another if they create a valid cross-word <br>
-        Here, a 2-character sequence can never be an equation so this generally is not possible.</li>
-</ul>
-    <h2>Score</h2>
-    <table border="1">
-        <tbody>
-            <tr>
-                <td>Number/Operator</td><td>Score value</td>
-            </tr>
-            <tr>
-                <td>1</td><td>1</td>
-            </tr>
-            <tr>
-                <td>2</td><td>1</td>
-            </tr>
-            <tr>
-                <td>3</td><td>2</td>
-            </tr>
-            <tr>
-                <td>4</td><td>2</td>
-            </tr>
-            <tr>
-                <td>5</td><td>3</td>
-            </tr>
-            <tr>
-                <td>6</td><td>2</td>
-            </tr>
-            <tr>
-                <td>7</td><td>4</td>
-            </tr>
-            <tr>
-                <td>8</td><td>2</td>
-            </tr>
-            <tr>
-                <td>9</td><td>2</td>
-            </tr>
-            <tr>
-                <td>0</td><td>1</td>
-            </tr>
-            <tr>
-                <td>+ (add)</td><td>1</td>
-            </tr>
-            <tr>
-                <td>- (subtract)</td><td>1</td>
-            </tr>
-            <tr>
-                <td>× (multiply)</td><td>2</td>
-            </tr>
-            <tr><td>/ (divide)</td><td>3</td>
-            </tr>
-            <tr>
-                <td>= (equals)</td><td>1</td>
-            </tr>
-            <tr>
-                <td>blank</td><td>0</td>
-            </tr>
-        </tbody>
-    </table>
-    <p>Content and image by dan <a href="https://www.instructables.com/Number-Scrabble-The-Game-aka-Math-Scrabble/">
-        Number Scrabble - the Game (aka: Math Scrabble)</a></p>
+            <li>You may only use one new '=' sign per turn</li>
+            <li>Equations can have multiple equal parts.</li>
+            <ul type="circle"><li>example: '2x2=1+3=4=5-1'</li></ul>
+            <li>Redundant equations are valid</li>
+            <ul type="circle"><li>example: '1-1+1-1=0=0+0'</li></ul>
+            <li>The '-' may be used either as an operator or before a number indicate its sign.</li>
+            <ul type="circle"><li>example: '-3=5-8'</li>
+                <li>example: '3=-5--8'</li></ul>
+            <li>You may not use leading '+' signs or leading '0' in front of a number</li>
+            <li>In normal scrabble, you can place one word alongside another if they create a valid cross-word <br>
+                Here, a 2-character sequence can never be an equation so this generally is not possible.</li>
+        </ul>
+    </div>
+        <h2 id = "scoreHeadline">Score</h2>
+        <div class = "wrapper">
+            <table border="1">
+                <tbody>
+                    <tr>
+                        <td>Number/Operator</td><td>Score value</td>
+                    </tr>
+                    <tr>
+                        <td>1</td><td>1</td>
+                    </tr>
+                    <tr>
+                        <td>2</td><td>1</td>
+                    </tr>
+                    <tr>
+                        <td>3</td><td>2</td>
+                    </tr>
+                    <tr>
+                        <td>4</td><td>2</td>
+                    </tr>
+                    <tr>
+                        <td>5</td><td>3</td>
+                    </tr>
+                    <tr>
+                        <td>6</td><td>2</td>
+                    </tr>
+                    <tr>
+                        <td>7</td><td>4</td>
+                    </tr>
+                    <tr>
+                        <td>8</td><td>2</td>
+                    </tr>
+                    <tr>
+                        <td>9</td><td>2</td>
+                    </tr>
+                    <tr>
+                        <td>0</td><td>1</td>
+                    </tr>
+                    <tr>
+                        <td>+ (add)</td><td>1</td>
+                    </tr>
+                    <tr>
+                        <td>- (subtract)</td><td>1</td>
+                    </tr>
+                    <tr>
+                        <td>× (multiply)</td><td>2</td>
+                    </tr>
+                    <tr><td>/ (divide)</td><td>3</td>
+                    </tr>
+                    <tr>
+                        <td>= (equals)</td><td>1</td>
+                    </tr>
+                    <tr>
+                        <td>blank</td><td>0</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
     </ul>
+    <footer class="footer1">
+        <p>Content and image by dan <a href="https://www.instructables.com/Number-Scrabble-The-Game-aka-Math-Scrabble/">
+            Number Scrabble - the Game (aka: Math Scrabble)</a></p>
+    </footer>
+    </div>
 }
