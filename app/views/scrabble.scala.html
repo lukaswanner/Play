@@ -22,7 +22,7 @@
                         <div class="cell label">@(row+1)</div>
                         @for(col <- 0 until size) {
                             @if(grid.cell(row,col).isSet) {
-                                <div class="cell card">@grid.cell(row,col)</div>
+                                @card(grid.cell(row,col).card, isCell = true)
                             } else {
                                 @if(grid.cell(row,col).isNormal) {
                                     <div class="cell normal">@grid.cell(row,col)</div>
@@ -38,8 +38,8 @@
             </div>
             <div class="control">
                 <div class="hand">
-                    @for(card <- hand){
-                            <div class="card">@card.toString</div>
+                    @for(c <- hand){
+                        @card(c, isCell = false)
                     }
                 </div>
 @*                <a href="@routes.HomeController.submit()"><button>Submit</button></a>*@

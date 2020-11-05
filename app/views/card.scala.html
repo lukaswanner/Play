@@ -1,0 +1,6 @@
+@(card:de.htwg.se.scrabble.model.gridComponent.CardInterface, isCell: Boolean)
+
+<div class="@isCell card">
+    <div class="character">@card</div>
+    <div class="point">@card.getPoint</div>
+</div>
