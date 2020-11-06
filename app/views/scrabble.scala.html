@@ -1,45 +1,59 @@
-@(controller:de.htwg.se.scrabble.controller.controllerComponent.ControllerInterface)
+@(controller: de.htwg.se.scrabble.controller.controllerComponent.ControllerInterface)
 
-@size = @{ controller.gridSize }
-@grid = @{ controller.getGameField.grid }
-@pile = @{ controller.getGameField.pile }
-@currPlayer = @{ controller.gameStatus.currPlayer() }
-@playerlist = @{ controller.getGameField.playerList }
-@hand = @{playerlist(currPlayer).hand}
+@size = @{
+    controller.gridSize
+}
+@grid = @{
+    controller.getGameField.grid
+}
+@pile = @{
+    controller.getGameField.pile
+}
+@currPlayer = @{
+    controller.gameStatus.currPlayer()
+}
+@playerlist = @{
+    controller.getGameField.playerList
+}
+@hand = @{
+    playerlist(currPlayer).hand
+}
 
 @main("HTWG Scrabble") {
-    <div class="flex">
+    <div class="playPage">
         <div class="gamecontainer">
-            <div class="grid">
-                <div class="row">
-                    <div class="cell label"> </div>
-                @for(i <- 1 until size+1) {
-                    <div class="cell label">@i</div>
-                }
+            <div class="myGrid">
+                <div class="myRow">
+                    <div class="myCell myLabel"> </div>
+                    @for(i <- 1 until size + 1) {
+                        <div class="myCell myLabel">@i</div>
+                    }
                 </div>
                 @for(col <- 0 until size) {
-                    <div class="row">
-                        <div class="cell label">@(col+1)</div>
+                    <div class="myRow">
+                        <div class="myCell myLabel">@(col + 1)</div>
                         @for(row <- 0 until size) {
-                            @if(grid.cell(row,col).isSet) {
-                                @card(grid.cell(row,col).card, addedClass = "cell")
+                            @if(grid.cell(row, col).isSet) {
+                                @card(grid.cell(row, col).card, addedClass = "myCell")
                             } else {
-                                @if(grid.cell(row,col).isNormal) {
-                                    <div class="cell normal">@grid.cell(row,col)</div>
-                                } else {@if(grid.cell(row,col).isDouble) {
-                                    <div class="cell double">@grid.cell(row,col)</div>
+                                @if(grid.cell(row, col).isNormal) {
+                                    <div class="myCell normal">@grid.cell(row, col)</div>
                                 } else {
-                                    <div class="cell triple">@grid.cell(row,col)</div>
+                                    @if(grid.cell(row, col).isDouble) {
+                                        <div class="myCell double">@grid.cell(row, col)</div>
+                                    } else {
+                                        <div class="myCell triple">@grid.cell(row, col)</div>
+                                    }
                                 }
-                            }}
+                            }
                         }
                     </div>
                 }
             </div>
-            <div class="hand">
-                @for(c <- hand){
-                    @card(c, addedClass = "")
-                }
+            <div class="myHand">
+            @for(c <- hand) {
+                @card(c, addedClass = "")
+            }
             </div>
         </div>
         <div class="control">
@@ -53,18 +67,22 @@
                 <div>
                     @if(currPlayer equals "A") {
                         <div class="score active">
+                            Player A: <span class="playerpoint">@playerlist("A").point</span>
+                        </div>
                     } else {
                         <div class="score">
+                            Player A: <span class="playerpoint">@playerlist("A").point</span>
+                        </div>
                     }
-                        Player A: <span class="playerpoint">@playerlist("A").point</span>
-                    </div>
                     @if(currPlayer equals "B") {
                         <div class="score active">
+                            Player B: <span class="playerpoint">@playerlist("B").point</span>
+                        </div>
                     } else {
                         <div class="score">
+                            Player B: <span class="playerpoint">@playerlist("B").point</span>
+                        </div>
                     }
-                        Player B: <span class="playerpoint">@playerlist("B").point</span>
-                    </div>
                 </div>
                 cards in stack: @pile.size <br>
                 <a href="@routes.HomeController.newGrid()"><button>new game</button></a>
