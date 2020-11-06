@@ -1,54 +1,63 @@
-/*<!-------------------navbar----------------->*/
-#user-info{
+
+#user-info {
     top: 0;
     position: sticky;
     z-index: 2;
 }
-.nav-bar{
+
+.nav-bar {
     top: 0;
     position: sticky;
-    z-index: 2; /bleibt immer oben am rand über allem/
-    /padding hier ändern verkleinert navbar Bereich/
+    z-index: 2;
+    box-shadow: 0 0 10px 8px rgba(200, 200, 200, .2);
 }
-.navbar-nav{
+
+.navbar-nav {
     float: right;
     text-align: right;
-    /backroung farbe hier verändern=NUR hintergrund der schrift/
+    font-size: 2em;
 }
-.navbar-brand img{
-    max-height: 3em; /logo*/
+
+.navbar-brand img {
+    max-height: 4em;
+}
+
+.nav-item{
+    margin: 0 .423em;
 }
 
 
-#header1 {
+#irgendwas {
     text-align: center;
-    background-color: LightGrey;
-    padding-top: 10px;
-    padding-bottom: 10px;
-}
-
-#header1 h1 {
-    color: green;
-    text-decoration: underline wavy orange;
+    background: linear-gradient(180deg, #dff1df 20%, #d9e7ff 100%);
+    padding: 2em 0;
 }
 
 #inhalt {
     text-align: center;
-    background-color: aqua;
+    background-color: white;
+    width: 60%;
+    min-width: 600px;
+    margin: auto;
+    box-shadow: 0 10px 10px 8px rgba(100, 100, 100, .2);
+    padding: 3em;
 }
 
 #description {
     text-align: center;
 }
 
-#scrabblePic {
+#scrabblePic img {
+    max-width: 600px;
     text-align: center;
     padding-top: 50px;
     padding-bottom: 50px;
+    width: 100%;
 }
 
-#rulesHeadline {
+#rules {
     text-align: center;
+    padding-top: 3.2em;
     padding-bottom: 10px;
 }
 
@@ -57,9 +66,11 @@
     padding-bottom: 30px;
 }
 
-#scoreHeadline {
+#score {
     text-align: center;
+    padding-top: 3.2em;
     padding-bottom: 10px;
+
 }
 
 .wrapper {
@@ -75,7 +86,25 @@
     text-align: center;
 }
 
-
 #rulesList {
     text-align: left;
+}
+
+.table1 {
+    border-collapse: collapse;
+    margin: 25px 0;
+    font-size: 1.2em;
+    font-family: sans-serif;
+    min-width: 400px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+}
+.table1 thead tr {
+    background-color: mediumaquamarine;
+    color: white;
+    /*text-align: center;*/
+    font-weight: bold;
+}
+
+.table1  td {
+    padding: 0.8em 1em;
 }
