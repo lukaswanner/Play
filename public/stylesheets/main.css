@@ -186,6 +186,13 @@ h1,h2,h3,h4,h5,h6 {
     width: 100%;
 }
 
+#logoPic{
+    max-width: 400px;
+    min-width: 100px;
+    width: 40%;
+    margin-bottom: 2em;
+}
+
 #rules {
     text-align: center;
     padding-top: 3.2em;
