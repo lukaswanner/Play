@@ -121,8 +121,6 @@ h1,h2,h3,h4,h5,h6 {
     color: red;
 }
 
-#title {
-    font-family: 'Oswald', sans-serif;
-    font-size: xx-large;
-    font-weight: bold;
+.home img{
+    width: 30%;
 }
