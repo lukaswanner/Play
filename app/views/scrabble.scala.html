@@ -1,95 +1,113 @@
 @(controller: de.htwg.se.scrabble.controller.controllerComponent.ControllerInterface)
 
-@size = @{
-    controller.gridSize
-}
-@grid = @{
-    controller.getGameField.grid
-}
-@pile = @{
-    controller.getGameField.pile
-}
-@currPlayer = @{
-    controller.gameStatus.currPlayer()
-}
-@playerlist = @{
-    controller.getGameField.playerList
-}
-@hand = @{
-    playerlist(currPlayer).hand
-}
+    @size = @{
+        controller.gridSize
+    }
 
-@main("HTWG Scrabble") {
-    <div class="playPage">
-        <div class="gamecontainer">
-            <div class="myGrid">
-                <div class="myRow">
-                    <div class="myCell myLabel"> </div>
-                    @for(i <- 1 until size + 1) {
-                        <div class="myCell myLabel">@i</div>
-                    }
-                </div>
-                @for(col <- 0 until size) {
-                    <div class="myRow">
-                        <div class="myCell myLabel">@(col + 1)</div>
-                        @for(row <- 0 until size) {
-                            @if(grid.cell(row, col).isSet) {
-                                @card(grid.cell(row, col).card, addedClass = "myCell")
-                            } else {
-                                @if(grid.cell(row, col).isNormal) {
-                                    <div class="myCell normal">@grid.cell(row, col)</div>
-                                } else {
-                                    @if(grid.cell(row, col).isDouble) {
-                                        <div class="myCell double">@grid.cell(row, col)</div>
+    @grid = @{
+        controller.getGameField.grid
+    }
+
+    @pile = @{
+        controller.getGameField.pile
+    }
+
+    @currPlayer = @{
+        controller.gameStatus.currPlayer()
+    }
+
+    @playerlist = @{
+        controller.getGameField.playerList
+    }
+
+    @hand = @{
+        playerlist(currPlayer).hand
+    }
+
+    @main("HTWG Scrabble") {
+        <div class="container main2">
+            <div class="row">
+                <div class="col gamecontainer">
+                    <div class="myGrid">
+                        <div class="myRow">
+                            <div class="myCell myLabel"> </div>
+                            @for(i <- 1 until size + 1) {
+                                <div class="myCell myLabel">@i</div>
+                            }
+                        </div>
+                        @for(col <- 0 until size) {
+                            <div class="myRow">
+                                <div class="myCell myLabel">@(col + 1)</div>
+                                @for(row <- 0 until size) {
+                                    @if(grid.cell(row, col).isSet) {
+                                        @card(grid.cell(row, col).card, addedClass = "myCell")
                                     } else {
-                                        <div class="myCell triple">@grid.cell(row, col)</div>
+                                        @if(grid.cell(row, col).isNormal) {
+                                            <div class="myCell normal">@grid.cell(row, col)</div>
+                                        } else {
+                                            @if(grid.cell(row, col).isDouble) {
+                                                <div class="myCell double">@grid.cell(row, col)</div>
+                                            } else {
+                                                <div class="myCell triple">@grid.cell(row, col)</div>
+                                            }
+                                        }
                                     }
                                 }
-                            }
+                            </div>
                         }
                     </div>
-                }
-            </div>
-            <div class="myHand">
-            @for(c <- hand) {
-                @card(c, addedClass = "")
-            }
+                    <div class="myHand">
+                    @for(c <- hand) {
+                        @card(c, addedClass = "")
+                    }
+                    </div>
+                </div>
+                <div class="col control">
+                    <div class="info">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col">
+                                    @if(currPlayer equals "A") {
+                                        <div class="card score active">
+                                            Player A: <span class="playerpoint">@playerlist("A").point</span>
+                                        </div>
+                                    } else {
+                                        <div class="card score">
+                                            Player A: <span class="playerpoint">@playerlist("A").point</span>
+                                        </div>
+                                    }
+                                </div>
+                                <div class="col">
+                                    @if(currPlayer equals "B") {
+                                        <div class="card score active">
+                                            Player B: <span class="playerpoint">@playerlist("B").point</span>
+                                        </div>
+                                    } else {
+                                        <div class="card score">
+                                            Player B: <span class="playerpoint">@playerlist("B").point</span>
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                        <p>cards in stack: @pile.size</p>
+                        <div class="container">
+                            <div class="row">
+                                <div class="col">
+                                    <button type="button" class="btn btn-dark btn-block" href="@routes.HomeController.newGrid()">
+                                        new game</button>
+                                    <button type="button" class="btn btn-dark btn-block" href="@routes.HomeController.submit()">
+                                        switch cards</button>
+
+                                    <button type="button" class="btn btn-dark btn-block" href="@routes.HomeController.submit()">
+                                        Set</button>
+                                    <button type="button" class="btn btn-dark btn-block" href="@routes.HomeController.submit()">
+                                        Submit</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
-        <div class="control">
-            <a href="@routes.HomeController.index()">
-                <div class="home">
-                    <img src="@routes.Assets.versioned("images/logo_long.png")" alt="">
-                    <i class="fa fa-home w3-xxxlarge"></i>
-                </div>
-            </a>
-            <div class="info">
-                <div>
-                    @if(currPlayer equals "A") {
-                        <div class="score active">
-                            Player A: <span class="playerpoint">@playerlist("A").point</span>
-                        </div>
-                    } else {
-                        <div class="score">
-                            Player A: <span class="playerpoint">@playerlist("A").point</span>
-                        </div>
-                    }
-                    @if(currPlayer equals "B") {
-                        <div class="score active">
-                            Player B: <span class="playerpoint">@playerlist("B").point</span>
-                        </div>
-                    } else {
-                        <div class="score">
-                            Player B: <span class="playerpoint">@playerlist("B").point</span>
-                        </div>
-                    }
-                </div>
-                cards in stack: @pile.size <br>
-                <a href="@routes.HomeController.newGrid()"><button>new game</button></a>
-                <a href="@routes.HomeController.submit()"><button>switch cards</button></a>
-                <a href="@routes.HomeController.submit()"><button>Set</button></a>
-                <a href="@routes.HomeController.submit()"><button>Submit</button></a>
-            </div>
-        </div>
-    </div>
-}
+    }

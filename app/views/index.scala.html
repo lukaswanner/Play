@@ -1,29 +1,9 @@
 @()
 
 @main("HTWG Scrabble") {
-    <!-------------------Navbar----------------->
-    <section id="user-info">
-        <div class="nav-bar">
-            <nav class="navbar navbar-expand-lg navbar-light navbar-fixed-top" style="background-color: #EFEFFB;">
-                    <!----hier oben wurde Hintergrundfarbe geändert von navbar---->
-                <a class="navbar-brand" href="#"> <img src="@routes.Assets.versioned("images/logo_long.png")"></a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span> <!---icon für menü--->
-                </button>
-                <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-                    <div class="navbar-nav ml-auto"> <!--ml-auto verschiebt nach rechts----->
-                        <a class="nav-item nav-link active" href="#">Home<span class="sr-only" (current)></span></a>
-                        <a class="nav-item nav-link" href="@routes.HomeController.scrabble()">Play</a>
-                        <a class="nav-item nav-link" href="#rules">Rules</a>
-                        <a class="nav-item nav-link" href="#score">Score</a>
-                    </div>
-                </div>
-            </nav>
-        </div>
-    </section>
         <!-------------------page----------------->
-    <div id = "irgendwas">
-        <div id = "inhalt">
+    <div class = "main">
+        <section id = "inhalt">
             <img id = "logoPic" src="@routes.Assets.versioned("images/logo_short.png")">
             <div id = "scrabblePic">
                 <img src=@routes.Assets.versioned("images/MathScrabble.jpg")>
@@ -38,7 +18,7 @@
 
             <h2 id = "rules">The Rules</h2>
             <p>
-        <div class = "wrapper">
+        <section class = "wrapper">
             <ul id = "rulesList">
                 <li>Except as noted, game play is similar to normal Scrabble</li>
                 <li>On each turn, players must make or add to a valid and correct equation.</li>
@@ -61,9 +41,9 @@
                 <li>In normal scrabble, you can place one word alongside another if they create a valid cross-word <br>
                     Here, a 2-character sequence can never be an equation so this generally is not possible.</li>
             </ul>
-        </div>
+        </section>
             <h2 id = "score">Score</h2>
-            <div class = "wrapper">
+            <section class = "wrapper">
                 <table class ="table1" border="1">
                     <thead>
                         <tr>
@@ -121,8 +101,8 @@
                         </tr>
                     </tbody>
                 </table>
-            </div>
-        </div>
+            </section>
+        </section>
     </div>
     </ul>
     <footer class="footer1">
