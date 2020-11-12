@@ -3,15 +3,15 @@
     margin: 0;
 }
 
-html,body{
+html, body {
     height: 100%;
 }
 
-h1,h2,h3,h4,h5,h6 {
+h1, h2, h3, h4, h5, h6 {
     font-family: 'Oswald', sans-serif;
 }
 
-.header{
+.header {
     padding: 2em;
     width: 100%;
     background-color: aquamarine;
@@ -30,7 +30,7 @@ h1,h2,h3,h4,h5,h6 {
     width: 60%;
 }
 
-.info{
+.info {
     text-align: center;
     font-size: 1.5em;
 }
@@ -44,7 +44,7 @@ h1,h2,h3,h4,h5,h6 {
     border-radius: 1em;
 }
 
-.myGrid{
+.myGrid {
     display: inline-flex;
     background: white;
     box-shadow: 0px 0px 10px 8px rgba(100, 100, 100, .2);
@@ -64,16 +64,16 @@ h1,h2,h3,h4,h5,h6 {
     margin: .15em;
 
     background: #f0f0f0;
-    box-shadow: inset 3px 3px 6px 4px rgba(100,100,100,0.15);
+    box-shadow: inset 3px 3px 6px 4px rgba(100, 100, 100, 0.15);
 
     font-weight: bold;
 }
 
-.double{
+.double {
     background-color: #ffe252;
 }
 
-.triple{
+.triple {
     background-color: #f85c5c;
 }
 
@@ -90,7 +90,7 @@ h1,h2,h3,h4,h5,h6 {
     padding: .5em;
     border-radius: .8em;
     background: #e9dac0;
-    box-shadow: 3px 3px 5px 2px rgba(100,100,100,0.15);
+    box-shadow: 3px 3px 5px 2px rgba(100, 100, 100, 0.15);
 }
 
 .myCard {
@@ -107,7 +107,7 @@ h1,h2,h3,h4,h5,h6 {
     background-image: url("../images/card.png");
     background-size: cover;
     /*background: #d29d7a;*/
-    box-shadow: 3px 3px 5px 2px rgba(100,100,100,0.15);
+    box-shadow: 3px 3px 5px 2px rgba(100, 100, 100, 0.15);
     font-weight: bold;
 }
 
@@ -115,7 +115,7 @@ h1,h2,h3,h4,h5,h6 {
     font-size: 1.2em;
 }
 
-.myPoint{
+.myPoint {
     position: absolute;
     right: .2em;
     bottom: .08em;
@@ -131,7 +131,7 @@ h1,h2,h3,h4,h5,h6 {
     color: red;
 }
 
-.home img{
+.home img {
     width: 30%;
     min-width: 200px;
 }
@@ -140,8 +140,8 @@ h1,h2,h3,h4,h5,h6 {
 
 #user-info {
     top: 0;
-    right:0;
-    left:0;
+    right: 0;
+    left: 0;
     position: fixed;
     z-index: 2;
 }
@@ -160,7 +160,7 @@ h1,h2,h3,h4,h5,h6 {
     max-height: 4em;
 }
 
-.nav-item{
+.nav-item {
     margin: 0.423em;
 }
 
@@ -174,8 +174,9 @@ h1,h2,h3,h4,h5,h6 {
     padding: 2em 0;
     margin-top: 6.5em;
 }
+
 .main2 {
-    margin-top: 4em;
+    margin-top: 6.5em;
 }
 
 #inhalt {
@@ -200,7 +201,7 @@ h1,h2,h3,h4,h5,h6 {
     width: 100%;
 }
 
-#logoPic{
+#logoPic {
     max-width: 400px;
     min-width: 100px;
     width: 40%;
@@ -222,7 +223,6 @@ h1,h2,h3,h4,h5,h6 {
     text-align: center;
     padding-top: 3.2em;
     padding-bottom: 10px;
-
 }
 
 .wrapper {
@@ -250,6 +250,7 @@ h1,h2,h3,h4,h5,h6 {
     min-width: 400px;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
 }
+
 .table1 thead tr {
     background-color: mediumaquamarine;
     color: white;
@@ -257,9 +258,19 @@ h1,h2,h3,h4,h5,h6 {
     font-weight: bold;
 }
 
-.table1  td {
+.table1 td {
     padding: 0.8em 1em;
 }
 
-/*--------------buttons-------------------*/
+/*--------------media-query-------------------*/
+@media only screen and (max-width: 800px) {
+    .myCell{
+        min-width: 2em;
+        min-height: 2em;
+        font-size: 0.7em;
+    }
+    .info{
+        font-size: 0.5em;
+    }
 
+}
