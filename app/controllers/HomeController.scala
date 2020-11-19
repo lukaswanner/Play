@@ -36,11 +36,6 @@ class HomeController @Inject()(val controllerComponents: ControllerComponents) e
     Ok(views.html.scrabble(gamecontroller))
   }
 
-  def setGrid(x: Int, y: Int, index: Int) = Action { implicit request: Request[AnyContent] =>
-    gamecontroller.setGrid(x, y, index)
-    Ok(views.html.scrabble(gamecontroller))
-  }
-
   def submit() = Action { implicit request: Request[AnyContent] =>
     gamecontroller.endTurn
     Ok(views.html.scrabble(gamecontroller))
@@ -55,5 +50,21 @@ class HomeController @Inject()(val controllerComponents: ControllerComponents) e
     gamecontroller.changeHand(currPlayer)
     Ok(views.html.scrabble(gamecontroller))
   }
+
+  def undo() = Action { implicit request: Request[AnyContent] =>
+    gamecontroller.undo
+    Ok(views.html.scrabble(gamecontroller))
+  }
+
+  def redo() = Action { implicit request: Request[AnyContent] =>
+    gamecontroller.redo
+    Ok(views.html.scrabble(gamecontroller))
+  }
+
+  def resize(size:Int) = Action { implicit request: Request[AnyContent] =>
+    gamecontroller.createFixedSizeGameField(size)
+    Ok(views.html.scrabble(gamecontroller))
+  }
+
 }
 

@@ -1,5 +1,15 @@
-document.getElementById("set").onclick = setCard
+document.getElementById("resize").onclick = showbutton
 
+document.getElementById("3x3").onclick = function () {
+    return resize(3)
+}
+document.getElementById("9x9").onclick = function () {
+    return resize(9)
+}
+
+document.getElementById("15x15").onclick = function () {
+    return resize(15)
+}
 
 let handarr = document.getElementsByClassName("inHand")
 let cellarr = document.getElementsByClassName("myCell")
@@ -49,8 +59,7 @@ function setCard() {
             if (activerow[0]) {
                 let activeCard = active[1]
                 let url = "/scrabble/set/" + (activerow[1] - 1) + "/" + (i - 1) + "/" + activeCard
-                document.getElementById("set").setAttribute("href", url)
-                document.getElementById("set").click()
+                document.location.replace(url)
             }
 
         }
@@ -70,4 +79,19 @@ function isActive(array) {
     }
     return false
 
+}
+
+function showbutton() {
+    let buttons = document.getElementsByClassName("possibleSize")
+    for (var i = 0; i < buttons.length; i++) {
+        buttons[i].classList.remove("d-none")
+    }
+}
+
+function resize(size) {
+    document.location.replace("/scrabble/resize/" + size)
+    let buttons = document.getElementsByClassName("possibleSize")
+    for (var i = 0; i < buttons.length; i++) {
+        buttons[i].classList.add("d-none")
+    }
 }
