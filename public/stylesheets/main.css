@@ -26,7 +26,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .gamecontainer {
-    margin: 3em 0 3em 3em;
+    margin: 1.5em;
     width: 60%;
 }
 
@@ -36,7 +36,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .control {
-    margin: 3em;
+    margin: 1.5em;
     padding: 1em 1.2em;
     width: 100%;
     background-color: white;
@@ -54,18 +54,9 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .myCell {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    min-width: 2.5em;
-    min-height: 2.5em;
-    border-radius: .3em;
     margin: .15em;
-
     background: #f0f0f0;
     box-shadow: inset 3px 3px 6px 4px rgba(100, 100, 100, 0.15);
-
     font-weight: bold;
 }
 
@@ -93,15 +84,18 @@ h1, h2, h3, h4, h5, h6 {
     box-shadow: 3px 3px 5px 2px rgba(100, 100, 100, 0.15);
 }
 
-.myCard {
-    position: relative;
+.myCell, .myCard {
     display: flex;
     justify-content: center;
     align-items: center;
 
-    min-width: 2.5em;
-    min-height: 2.5em;
-    border-radius: .5em;
+    min-width: 2.2em;
+    min-height: 2.2em;
+    border-radius: .3em;
+}
+
+.myCard {
+    position: relative;
     margin: .2em;
 
     background-image: url("../images/card.png");
