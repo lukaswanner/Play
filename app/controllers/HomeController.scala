@@ -13,6 +13,7 @@ import play.api.mvc._
 class HomeController @Inject()(val controllerComponents: ControllerComponents) extends BaseController {
 
   val gamecontroller = Scrabble.controller
+
   def text = gamecontroller.gameToString
 
   /**
@@ -35,13 +36,35 @@ class HomeController @Inject()(val controllerComponents: ControllerComponents) e
     Ok(views.html.scrabble(gamecontroller))
   }
 
-  def setGrid(x:Int,y:Int,index:Int) = Action { implicit request: Request[AnyContent] =>
-    gamecontroller.setGrid(x,y,index)
-    Ok(views.html.scrabble(gamecontroller))
-  }
-
   def submit() = Action { implicit request: Request[AnyContent] =>
     gamecontroller.endTurn
     Ok(views.html.scrabble(gamecontroller))
   }
+
+  def setCard(x: Int, y: Int, count: Int) = Action { implicit request: Request[AnyContent] =>
+    gamecontroller.setGrid(x, y, count)
+    Ok(views.html.scrabble(gamecontroller))
+  }
+
+  def switchCards(currPlayer:String) = Action { implicit request: Request[AnyContent] =>
+    gamecontroller.changeHand(currPlayer)
+    Ok(views.html.scrabble(gamecontroller))
+  }
+
+  def undo() = Action { implicit request: Request[AnyContent] =>
+    gamecontroller.undo
+    Ok(views.html.scrabble(gamecontroller))
+  }
+
+  def redo() = Action { implicit request: Request[AnyContent] =>
+    gamecontroller.redo
+    Ok(views.html.scrabble(gamecontroller))
+  }
+
+  def resize(size:Int) = Action { implicit request: Request[AnyContent] =>
+    gamecontroller.createFixedSizeGameField(size)
+    Ok(views.html.scrabble(gamecontroller))
+  }
+
 }
+

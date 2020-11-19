@@ -1,108 +1,118 @@
 @(controller: de.htwg.se.scrabble.controller.controllerComponent.ControllerInterface)
 
-    @size = @{
-        controller.gridSize
-    }
+@size = @{
+    controller.gridSize
+}
 
-    @grid = @{
-        controller.getGameField.grid
-    }
+@grid = @{
+    controller.getGameField.grid
+}
 
-    @pile = @{
-        controller.getGameField.pile
-    }
+@pile = @{
+    controller.getGameField.pile
+}
 
-    @currPlayer = @{
-        controller.gameStatus.currPlayer()
-    }
+@currPlayer = @{
+    controller.gameStatus.currPlayer()
+}
 
-    @playerlist = @{
-        controller.getGameField.playerList
-    }
+@playerlist = @{
+    controller.getGameField.playerList
+}
 
-    @hand = @{
-        playerlist(currPlayer).hand
-    }
+@hand = @{
+    playerlist(currPlayer).hand
+}
 
-    @main("HTWG Scrabble") {
-        <div class="container main2">
-            <div class="row">
-                <div class="col gamecontainer">
-                    <div class="myGrid">
+@main("HTWG Scrabble") {
+    <div class="container main2">
+        <div class="row">
+            <div class="col gamecontainer">
+                <div class="myGrid">
+                    <div class="myRow">
+                        <div class="myCell myLabel"> </div>
+                        @for(i <- 1 until size + 1) {
+                            <div class="myCell myLabel">@i</div>
+                        }
+                    </div>
+                    @for(col <- 0 until size) {
                         <div class="myRow">
-                            <div class="myCell myLabel"> </div>
-                            @for(i <- 1 until size + 1) {
-                                <div class="myCell myLabel">@i</div>
-                            }
-                        </div>
-                        @for(col <- 0 until size) {
-                            <div class="myRow">
-                                <div class="myCell myLabel">@(col + 1)</div>
-                                @for(row <- 0 until size) {
-                                    @if(grid.cell(row, col).isSet) {
-                                        @card(grid.cell(row, col).card, addedClass = "myCell")
+                            <div class="myCell myLabel">@(col + 1)</div>
+                            @for(row <- 0 until size) {
+                                @if(grid.cell(row, col).isSet) {
+                                    @card(grid.cell(row, col).card, addedClass = "myCell")
+                                } else {
+                                    @if(grid.cell(row, col).isNormal) {
+                                        <div class="myCell normal">@grid.cell(row, col)</div>
                                     } else {
-                                        @if(grid.cell(row, col).isNormal) {
-                                            <div class="myCell normal">@grid.cell(row, col)</div>
+                                        @if(grid.cell(row, col).isDouble) {
+                                            <div class="myCell double">@grid.cell(row, col)</div>
                                         } else {
-                                            @if(grid.cell(row, col).isDouble) {
-                                                <div class="myCell double">@grid.cell(row, col)</div>
-                                            } else {
-                                                <div class="myCell triple">@grid.cell(row, col)</div>
-                                            }
+                                            <div class="myCell triple">@grid.cell(row, col)</div>
                                         }
                                     }
                                 }
-                            </div>
-                        }
-                    </div>
-                    <div class="myHand">
-                    @for(c <- hand) {
-                        @card(c, addedClass = "")
+                            }
+                        </div>
                     }
-                    </div>
                 </div>
-                <div class="col control">
-                    <div class="info">
-                        <div class="container">
-                            <div class="row">
-                                <div class="col">
-                                    @if(currPlayer equals "A") {
-                                        <div class="card score active shadow bg-white rounded">
-                                            Player A: <span class="playerpoint">@playerlist("A").point</span>
-                                        </div>
-                                    } else {
-                                        <div class="card score shadow mb-2 bg-white rounded">
-                                            Player A: <span class="playerpoint">@playerlist("A").point</span>
-                                        </div>
-                                    }
+                <div class="myHand">
+                @for(c <- hand) {
+                    @card(c, addedClass = "inHand")
+                }
+                </div>
+            </div>
+            <div class="col control">
+                <div class="info">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col">
+                            @if(currPlayer equals "A") {
+                                <div class="card score active shadow bg-white rounded">
+                                    Player A: <span class="playerpoint">@playerlist("A").point</span>
                                 </div>
-                                <div class="col">
-                                    @if(currPlayer equals "B") {
-                                        <div class="card score active shadow bg-white rounded">
-                                            Player B: <span class="playerpoint">@playerlist("B").point</span>
-                                        </div>
-                                    } else {
-                                        <div class="card score shadow mb-2 bg-white rounded">
-                                            Player B: <span class="playerpoint">@playerlist("B").point</span>
-                                        </div>
-                                    }
+                            } else {
+                                <div class="card score shadow mb-2 bg-white rounded">
+                                    Player A: <span class="playerpoint">@playerlist("A").point</span>
                                 </div>
+                            }
+                            </div>
+                            <div class="col">
+                            @if(currPlayer equals "B") {
+                                <div class="card score active shadow bg-white rounded">
+                                    Player B: <span class="playerpoint">@playerlist("B").point</span>
+                                </div>
+                            } else {
+                                <div class="card score shadow mb-2 bg-white rounded">
+                                    Player B: <span class="playerpoint">@playerlist("B").point</span>
+                                </div>
+                            }
                             </div>
                         </div>
-                        <p>cards in stack: @pile.size</p>
-                        <div class="container">
-                            <div class="row">
-                                <div class="col">
-                                    <button type="button" class="btn btn-dark btn-block" href="@routes.HomeController.newGrid()">
-                                        new game</button>
-                                    <button type="button" class="btn btn-dark btn-block" href="@routes.HomeController.submit()">
-                                        switch cards</button>
-
-                                    <button type="button" class="btn btn-dark btn-block" href="@routes.HomeController.submit()">
-                                        Set</button>
-                                    <button type="button" class="btn btn-dark btn-block" href="@routes.HomeController.submit()">
-                                        Submit</button>
+                    </div>
+                    <p>cards in stack: @pile.size</p>
+                    <div class="container">
+                        <div class="row">
+                            <div class="col">
+                                <a type="button" class="btn btn-dark btn-block" href="@routes.HomeController.newGrid()">
+                                    new game</a>
+                                <a type="button" class="btn btn-dark btn-block" href="@routes.HomeController.switchCards(currPlayer)">
+                                    switch cards</a>
+                                <a type="button" id="set" class="btn btn-dark btn-block" href="@routes.HomeController.undo">
+                                    undo</a>
+                                <a type="button" id="set" class="btn btn-dark btn-block" href="@routes.HomeController.redo">
+                                    redo</a>
+                                <a type="button" class="btn btn-dark btn-block" id="submit" href="@routes.HomeController.submit()">
+                                    submit</a>
+                                <button type="button" class="btn btn-dark btn-block mb-3" id="resize">
+                                    resize</button>
+                                <div class="col sizes">
+                                    <button type="button" class="btn btn-dark btn-block possibleSize d-none" id="3x3">
+                                        3x3</button>
+                                    <button type="button" class="btn btn-dark btn-block possibleSize d-none" id="9x9">
+                                        9x9</button>
+                                    <button type="button" class="btn btn-dark btn-block possibleSize d-none" id="15x15">
+                                        15x15</button>
                                 </div>
                             </div>
                         </div>
@@ -110,4 +120,5 @@
                 </div>
             </div>
         </div>
-    }
+    </div>
+}
