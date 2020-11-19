@@ -28,6 +28,7 @@ h1, h2, h3, h4, h5, h6 {
 .gamecontainer {
     margin: 3em 0 3em 3em;
     width: 60%;
+    text-align: center;
 }
 
 .info {
@@ -123,12 +124,16 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .playerpoint {
-    font-size: 5em;
+    font-size: 3em;
     font-weight: bold;
 }
 
 .active {
-    color: red;
+    color : red;
+}
+
+.activeDiv {
+    border : 1px solid black;
 }
 
 .home img {
@@ -264,12 +269,13 @@ h1, h2, h3, h4, h5, h6 {
 
 /*--------------media-query-------------------*/
 @media only screen and (max-width: 800px) {
-    .myCell{
+    .myCell {
         min-width: 2em;
         min-height: 2em;
         font-size: 0.7em;
     }
-    .info{
+
+    .info {
         font-size: 0.5em;
     }
 
