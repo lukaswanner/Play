@@ -1,6 +1,5 @@
-//document.getElementById("resizebtn").addEventListener("click",resize)
+document.getElementById("resizebtn").onclick = f
 
-document.getElementById("resizebtn").onclick = resize
 
 let arr = document.getElementsByClassName("inHand")
 let cellarr = document.getElementsByClassName("myCell")
@@ -26,9 +25,6 @@ for (var i = 0; i < cellarr.length; i++) {
     }
 }
 
-for (var i = 0; i < rowarr.length; i++) {
-    let name = rowarr[i].className
-}
 
 function recolor(element, arr) {
     console.log(element)
@@ -40,6 +36,29 @@ function recolor(element, arr) {
 
 }
 
-function getPosition() {
+function f() {
+    if (document.getElementById("resizebtn").getAttribute("href") == "/") {
+        return false
+    } else {
+        for (var i = 0; i < rowarr.length; i++) {
+            //get the current row
+            let row = rowarr[i]
+            let cells = row.getElementsByClassName("myCell")
+            for (var j = 0; j < cells.length; j++) {
+                if (cells[j].classList.contains("activeDiv")) {
+                    console.log([i - 1, j - 1])
+                    document.getElementById("resizebtn").setAttribute("href","/")
+                }
+            }
+        }
+    }
+}
 
+
+function isActive(element, index) {
+    if (element.classList.contains("active")) {
+        return index
+    } else {
+        return -1
+    }
 }

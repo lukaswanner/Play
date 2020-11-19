@@ -13,6 +13,7 @@ import play.api.mvc._
 class HomeController @Inject()(val controllerComponents: ControllerComponents) extends BaseController {
 
   val gamecontroller = Scrabble.controller
+
   def text = gamecontroller.gameToString
 
   /**
@@ -35,13 +36,18 @@ class HomeController @Inject()(val controllerComponents: ControllerComponents) e
     Ok(views.html.scrabble(gamecontroller))
   }
 
-  def setGrid(x:Int,y:Int,index:Int) = Action { implicit request: Request[AnyContent] =>
-    gamecontroller.setGrid(x,y,index)
+  def setGrid(x: Int, y: Int, index: Int) = Action { implicit request: Request[AnyContent] =>
+    gamecontroller.setGrid(x, y, index)
     Ok(views.html.scrabble(gamecontroller))
   }
 
   def submit() = Action { implicit request: Request[AnyContent] =>
     gamecontroller.endTurn
     Ok(views.html.scrabble(gamecontroller))
+  }
+
+  def why() = Action { implicit request: Request[AnyContent] =>
+    gamecontroller.setGrid(5,5,10)
+    Ok(views.html.index())
   }
 }
