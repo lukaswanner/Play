@@ -1,16 +1,16 @@
-document.getElementById("set").onclick = f
+document.getElementById("set").onclick = setCard
 
 
-let arr = document.getElementsByClassName("inHand")
+let handarr = document.getElementsByClassName("inHand")
 let cellarr = document.getElementsByClassName("myCell")
 let rowarr = document.getElementsByClassName("myRow")
 
 
-for (var i = 0; i < arr.length; i++) {
-    let element = arr[i]
+for (var i = 0; i < handarr.length; i++) {
+    let element = handarr[i]
 
     element.onclick = function () {
-        return recolor(element, arr)
+        return recolor(element, handarr)
     }
 
 }
@@ -19,15 +19,18 @@ for (var i = 0; i < cellarr.length; i++) {
     let name = cellarr[i].className
     let element = cellarr[i]
     if (!name.includes("myLabel")) {
-        cellarr[i].onclick = function () {
-            return recolor(element, cellarr)
+        element.onclick = function () {
+            if (!element.classList.contains("activeDiv")) {
+                return recolor(element, cellarr)
+            } else {
+                return setCard()
+            }
         }
     }
 }
 
 
 function recolor(element, arr) {
-    console.log(element)
     for (var i = 0; i < arr.length; i++) {
         arr[i].classList.remove("activeDiv")
     }
@@ -36,34 +39,35 @@ function recolor(element, arr) {
 
 }
 
-function f() {
-    for (var i = 0; i < rowarr.length; i++) {
-        let row = rowarr[i]
-        let cells = row.getElementsByClassName("myCell")
-        for (var j = 0; j < cells.length; j++) {
-            if (cells[j].classList.contains("activeDiv")) {
-                console.log([i - 1, j - 1])
-                let activeCard = -1
-                for (var t = 0; t < arr.length; t++) {
-                    if (arr[t].classList.contains("activeDiv")) {
-                        activeCard = t
-                        break
-                    }
-                }
-                let url = "/scrabble/set/" + (j - 1) + "/" + (i - 1) + "/" + activeCard
+function setCard() {
+    let active = isActive(handarr)
+    if (active[0]) {
+        for (var i = 0; i < rowarr.length; i++) {
+            let row = rowarr[i]
+            let cells = row.getElementsByClassName("myCell")
+            activerow = isActive(cells)
+            if (activerow[0]) {
+                let activeCard = active[1]
+                let url = "/scrabble/set/" + (activerow[1] - 1) + "/" + (i - 1) + "/" + activeCard
                 document.getElementById("set").setAttribute("href", url)
                 document.getElementById("set").click()
             }
+
         }
+    } else {
+        alert("No card was selected")
     }
 
 }
 
 
-function isActive(element, index) {
-    if (element.classList.contains("active")) {
-        return index
-    } else {
-        return -1
+function isActive(array) {
+    for (var i = 0; i < array.length; i++) {
+        let element = array[i]
+        if (element.classList.contains("activeDiv")) {
+            return [true, i]
+        }
     }
+    return false
+
 }
