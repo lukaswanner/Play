@@ -83,8 +83,14 @@ function isActive(array) {
 
 function showbutton() {
     let buttons = document.getElementsByClassName("possibleSize")
-    for (var i = 0; i < buttons.length; i++) {
-        buttons[i].classList.remove("d-none")
+    if (buttons[0].classList.contains("d-none")) {
+        for (var i = 0; i < buttons.length; i++) {
+            buttons[i].classList.remove("d-none")
+        }
+    }else{
+        for (var i = 0; i < buttons.length; i++) {
+            buttons[i].classList.add("d-none")
+        }
     }
 }
 
