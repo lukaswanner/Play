@@ -46,8 +46,14 @@ class HomeController @Inject()(val controllerComponents: ControllerComponents) e
     Ok(views.html.scrabble(gamecontroller))
   }
 
-  def why() = Action { implicit request: Request[AnyContent] =>
-    gamecontroller.setGrid(5,5,10)
-    Ok(views.html.index())
+  def setCard(x: Int, y: Int, count: Int) = Action { implicit request: Request[AnyContent] =>
+    gamecontroller.setGrid(x, y, count)
+    Ok(views.html.scrabble(gamecontroller))
+  }
+
+  def switchCards(currPlayer:String) = Action { implicit request: Request[AnyContent] =>
+    gamecontroller.changeHand(currPlayer)
+    Ok(views.html.scrabble(gamecontroller))
   }
 }
+

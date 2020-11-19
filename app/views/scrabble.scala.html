@@ -94,17 +94,16 @@
                     <div class="container">
                         <div class="row">
                             <div class="col">
-                                <button type="button" class="btn btn-dark btn-block" href="@routes.HomeController.newGrid()">
-                                    new game</button>
-                                <button type="button" class="btn btn-dark btn-block" href="@routes.HomeController.submit()">
-                                    switch cards</button>
-
-                                <button type="button" class="btn btn-dark btn-block" href="@routes.HomeController.why()">
-                                    Set</button>
-                                <button type="button" class="btn btn-dark btn-block" href="@routes.HomeController.why()">
-                                    Submit</button>
-                                <button type="button" class="btn btn-dark btn-block" id="resizebtn">
-                                    resize</button>
+                                <a type="button" class="btn btn-dark btn-block" href="@routes.HomeController.newGrid()">
+                                    new game</a>
+                                <a type="button" class="btn btn-dark btn-block" href="@routes.HomeController.switchCards(currPlayer)">
+                                    switch cards</a>
+                                <a type="button" id="set" class="btn btn-dark btn-block" href="#">
+                                    Set</a>
+                                <a type="button" class="btn btn-dark btn-block" id="submit" href="@routes.HomeController.submit()">
+                                    Submit</a>
+                                <a type="button" class="btn btn-dark btn-block" href="#">
+                                    resize</a>
                             </div>
                         </div>
                     </div>
