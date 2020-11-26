@@ -57,6 +57,7 @@ function setCard() {
             let cells = row.getElementsByClassName("myCell")
             activerow = isActive(cells)
             if (activerow[0]) {
+                console.log([activerow[1],i])
                 let activeCard = active[1]
                 let url = "/scrabble/set/" + (activerow[1] - 1) + "/" + (i - 1) + "/" + activeCard
                 document.location.replace(url)
@@ -87,7 +88,7 @@ function showbutton() {
         for (var i = 0; i < buttons.length; i++) {
             buttons[i].classList.remove("d-none")
         }
-    }else{
+    } else {
         for (var i = 0; i < buttons.length; i++) {
             buttons[i].classList.add("d-none")
         }
@@ -96,6 +97,10 @@ function showbutton() {
 
 function resize(size) {
     document.location.replace("/scrabble/resize/" + size)
+    handarr = document.getElementsByClassName("inHand")
+    cellarr = document.getElementsByClassName("myCell")
+    rowarr = document.getElementsByClassName("myRow")
+
     let buttons = document.getElementsByClassName("possibleSize")
     for (var i = 0; i < buttons.length; i++) {
         buttons[i].classList.add("d-none")
