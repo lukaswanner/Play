@@ -14,13 +14,12 @@ $("#15x15").click(function () {
 
 let handarr = $(".inHand")
 let cellarr = $(".myCell")
-let rowarr = $(".myCol")
+let rowarr = $(".myRow")
 
 
 $("div.inHand").click(function (ev) {
     return recolor(ev.currentTarget, handarr)
 })
-
 
 
 $(".myCell").not(".myLabel").click(function (ev) {
@@ -43,12 +42,12 @@ function setCard() {
         for (var i = 0; i < rowarr.length; i++) {
             let row = rowarr[i]
             let cells = row.getElementsByClassName("myCell")
-            activerow = isActive(cells)
+            let activerow = isActive(cells)
             if (activerow[0]) {
-                console.log([activerow[1], i])
                 let activeCard = active[1]
                 let url = "/scrabble/set/" + (activerow[1] - 1) + "/" + (i - 1) + "/" + activeCard
-                document.location.replace(url)
+                // document.location.replace(url)
+                test()
             }
         }
     } else {
@@ -95,6 +94,17 @@ function resize(size) {
 }
 
 
+function test() {
+    $.ajax({
+        method: "GET",
+        url: "/json",
+        dataType: "json",
+
+        success: function (result) {
+            console.log(result)
+        }
+    });
+}
 
 
 //old js code

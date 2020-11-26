@@ -66,5 +66,9 @@ class HomeController @Inject()(val controllerComponents: ControllerComponents) e
     Ok(views.html.scrabble(gamecontroller))
   }
 
+  def gridToJson = Action {
+    Ok(gamecontroller.memToJson(gamecontroller.createMemento()))
+  }
+
 }
 
