@@ -144,6 +144,7 @@ function updateGrid(grid) {
                 data[j + 1].classList.add("myCard")
                 data[j + 1].classList.add("set")
                 $(".undo").removeClass("undo")
+                $(".redo").removeClass("redo")
                 data[j + 1].classList.add("undo")
                 data[j + 1].appendChild(character)
                 data[j + 1].appendChild(points)
@@ -186,6 +187,7 @@ function undoGrid(grid) {
             if (data[j + 1].classList.contains("undo")) {
                 data[j + 1].classList.remove("myCard")
                 data[j + 1].classList.remove("set")
+                data[j + 1].classList.add("redo")
                 if (data[j + 1].classList.contains("triple")) {
                     data[j + 1].innerHTML = "x3"
                 } else if (data[j + 1].classList.contains("double")) {
@@ -197,6 +199,34 @@ function undoGrid(grid) {
         }
     }
 }
+
+function redoGrid(grid) {
+    rows = $(".myRow")
+    for (var i = 0; i < grid.size; i++) {
+        data = rows.get(i + 1).children
+        cell_value = grid.cells[i]
+        for (var j = 0; j < grid.size; j++) {
+            value = cell_value[j]
+            if (data[j + 1].classList.contains("redo")) {
+                data[j + 1].innerHTML = ""
+                var character = document.createElement("div")
+                character.className = "myCharacter"
+                character.innerHTML = value
+                var points = document.createElement("div")
+                points.className = "myPoint"
+                points.innerHTML = point[value]
+                data[j + 1].classList.add("myCard")
+                data[j + 1].classList.add("set")
+                $(".undo").removeClass("undo")
+                $(".redo").removeClass("redo")
+                data[j + 1].classList.add("undo")
+                data[j + 1].appendChild(character)
+                data[j + 1].appendChild(points)
+            }
+        }
+    }
+}
+
 
 
 function loadJson() {
@@ -245,6 +275,23 @@ function loadUndoGrid() {
             grid = new Grid(grid_size)
             grid.fill(result.gameField.grid.cells)
             undoGrid(grid)
+            loadHand()
+        }
+    });
+}
+
+function loadRedoGrid() {
+    $.ajax({
+        method: "GET",
+        url: "/json",
+        dataType: "json",
+
+        success: function (result) {
+            console.log(result)
+            grid_size = Object.keys(result.gameField.grid.cells).length
+            grid = new Grid(grid_size)
+            grid.fill(result.gameField.grid.cells)
+            redoGrid(grid)
             loadHand()
         }
     });
@@ -372,7 +419,7 @@ function initBtns() {
             url: "/scrabble/redo",
 
             success: function (result) {
-                //todo lade
+                loadRedoGrid()
             }
         });
     })
