@@ -147,6 +147,8 @@ function updateGrid(grid, result){
         return recolor(ev.currentTarget, $(".inHand"))
     })
 
+
+
 }
 
 
