@@ -261,15 +261,15 @@ function loadPoints() {
 
         success: function (result) {
             if (result.status != "fc") {
+                $("#scoreA .playerpoint")[0].innerHTML = result.gameField.playerList.A.point
+                $("#scoreB .playerpoint")[0].innerHTML = result.gameField.playerList.B.point
                 if (curr_player == "A") {
-                    $("#PlayerA").removeClass("active")
-                    $("#PlayerB").addClass("active")
-                    $("#PlayerPointB").innerText = result.gameField.playerList.A.point
+                    $("#scoreA").removeClass("active")
+                    $("#scoreB").addClass("active")
                     curr_player = "B"
                 } else {
-                    $("#PlayerB").removeClass("active")
-                    $("#PlayerA").addClass("active")
-                    $("#PlayerPointB").innerText = result.gameField.playerList.B.point
+                    $("#scoreB").removeClass("active")
+                    $("#scoreA").addClass("active")
                     curr_player = "A"
                 }
             }else{
