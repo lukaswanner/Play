@@ -46,7 +46,7 @@ function setCard() {
             if (activerow[0]) {
                 let activeCard = active[1]
                 let url = "/scrabble/set/" + (activerow[1] - 1) + "/" + (i - 1) + "/" + activeCard
-                $.get(url)
+                //$.get(url)
                 loadJson()
             }
         }
@@ -126,12 +126,12 @@ function updateGrid(grid){
         }
         cells[i] = data
     }
-
     for(var i = 0;i < grid.size;i++){
         data = cells[i]
         cell_value = grid.cells[i]
         for(var j = 0;j < grid.size;j++){
-            //data[j].html(cell_value[j])
+            el = data[j]
+            el.innerHTML("test")
         }
     }
 
