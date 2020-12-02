@@ -46,7 +46,7 @@ function setCard() {
             if (activerow[0]) {
                 let activeCard = active[1]
                 let url = "/scrabble/set/" + (activerow[1] - 1) + "/" + (i - 1) + "/" + activeCard
-                //$.get(url)
+                $.get(url)
                 loadJson()
             }
         }
@@ -101,16 +101,27 @@ class Grid {
     }
 
     fill(json){
-        for(let i = 0; i < this.size;i++){
-            let arr = json[i]
-            console.log(arr)
-            let data = []
-            for(let j = 0;j < arr.length;j++) {
-                 data[j] = [arr[j].value, arr[j].kind]
+        var data = []
+        for(var j = 0;j <this.size;j++) {
+            for (var i = 0; i < this.size; i++) {
+                data[i] = json[i][j].value
             }
-            this.cells[i] = data
+            this.cells[j] = data
+            data = []
         }
+
+        // for(let i = 0; i < this.size;i++){
+        //     let arr = json[i]
+        //     let data = []
+        //     for(let j = 0;j < arr.length;j++) {
+        //         console.log(arr[j])
+        //          data[j] = [arr[j].value, arr[j].kind]
+        //     }
+        //     this.cells[i] = data
+        // }
+        // console.log(this.cells)
     }
+
 
 }
 
@@ -123,7 +134,7 @@ function updateGrid(grid){
         console.log(cell_value)
         for(var j = 0;j < grid.size;j++){
             value = cell_value[j]
-            data[j+1].innerHTML = value[0]
+            data[j+1].innerHTML = value
         }
     }
 
