@@ -11,14 +11,29 @@ $("#15x15").click(function () {
     return resize(15)
 })
 
-
-let handarr = $(".inHand")
 let cellarr = $(".myCell")
 let rowarr = $(".myRow")
 
+const point = {
+    "=": 1,
+    "+": 1,
+    "-": 1,
+    "*": 2,
+    "/": 3,
+    "1": 1,
+    "2": 1,
+    "3": 2,
+    "4": 2,
+    "5": 3,
+    "6": 2,
+    "7": 4,
+    "8": 2,
+    "9": 2,
+    "0": 1
+}
 
 $("div.inHand").click(function (ev) {
-    return recolor(ev.currentTarget, handarr)
+    return recolor(ev.currentTarget, $(".inHand"))
 })
 
 
@@ -37,7 +52,7 @@ function recolor(element, arr) {
 }
 
 function setCard() {
-    let active = isActive(handarr)
+    let active = isActive($(".inHand"))
     if (active[0]) {
         for (var i = 0; i < rowarr.length; i++) {
             let row = rowarr[i]
@@ -46,8 +61,14 @@ function setCard() {
             if (activerow[0]) {
                 let activeCard = active[1]
                 let url = "/scrabble/set/" + (activerow[1] - 1) + "/" + (i - 1) + "/" + activeCard
-                $.get(url)
-                loadJson()
+                $.ajax({
+                    method: "GET",
+                    url: url,
+
+                    success: function () {
+                        loadJson()
+                    }
+                });
             }
         }
     } else {
@@ -94,7 +115,6 @@ function resize(size) {
 }
 
 class Grid {
-
     constructor(size) {
         this.size = size
         this.cells = []
@@ -114,39 +134,42 @@ class Grid {
 }
 
 function updateGrid(grid, result){
-    let rows = $(".myCell").not(".myLabel")
+    let cells = $(".myCell").not(".myLabel")
     let index = 0
     let test = result.gameField.grid.cells
 
     for(var i = 0;i < grid.size;i++){
-        data = []
         for(var j = 0;j < grid.size;j++){
             if(test[j][i].value !== "") {
                 let html = "<div class=\"myCharacter\">"+test[j][i].value+"</div>"
-                //+"<div class=\"myPoint\">"+test[j][i].value+"</div>"
-                rows[index].classList.add("myCard")
-                rows[index].innerHTML = html
+                +"<div class=\"myPoint\">"+ point[test[j][i].value]+"</div>"
+                cells[index].classList.add("myCard")
+                cells[index].innerHTML = html
             }
             index ++
         }
     }
-    let html2 =""
-    //if (result.gameField.status === "pA") {
-        var newhand = result.gameField.playerList.A.hand
-    // } else {
-    //     var newhand = result.gameField.playerList.B.hand
-    // }
+}
+
+function updateHand(result) {
+    let html2 = ""
+    let newhand
+    console.log(result.status)
+    if (result.status === "pA" || result.status === "fc") {
+        newhand = result.gameField.playerList.A.hand
+    } else {
+        newhand = result.gameField.playerList.B.hand
+    }
 
     for (var j = 0;j < newhand.length;j++){
-        html2 += "<div class=\"myCard inHand\"> <div class=\"myCharacter\">" +
-            newhand[j].value+"</div></div>"
+        html2 += "<div class=\"myCard inHand\"> <div class=\"myCharacter\">"+newhand[j].value+"</div>"
+            +"<div class=\"myPoint\">"+ point[newhand[j].value]+"</div></div>"
     }
     $(".myHand")[0].innerHTML = html2
 
     $("div.inHand").click(function (ev) {
         return recolor(ev.currentTarget, $(".inHand"))
     })
-
 }
 
 
@@ -162,6 +185,7 @@ function loadJson() {
             grid = new Grid(grid_size)
             grid.fill(result.gameField.grid.cells)
             updateGrid(grid, result)
+            updateHand(result)
         }
     });
 }
