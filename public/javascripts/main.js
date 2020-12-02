@@ -16,6 +16,23 @@ let handarr = $(".inHand")
 let cellarr = $(".myCell")
 let rowarr = $(".myRow")
 
+const point = {
+    "=": 1,
+    "+": 1,
+    "-": 1,
+    "*": 2,
+    "/": 3,
+    "1": 1,
+    "2": 1,
+    "3": 2,
+    "4": 2,
+    "5": 3,
+    "6": 2,
+    "7": 4,
+    "8": 2,
+    "9": 2,
+    "0": 1
+}
 
 $("div.inHand").click(function (ev) {
     return recolor(ev.currentTarget, handarr)
@@ -37,7 +54,7 @@ function recolor(element, arr) {
 }
 
 function setCard() {
-    let active = isActive(handarr)
+    let active = isActive($(".inHand"))
     if (active[0]) {
         for (var i = 0; i < rowarr.length; i++) {
             let row = rowarr[i]
@@ -49,12 +66,12 @@ function setCard() {
                 $.ajax({
                     method: "GET",
                     url: url,
-
                     success: function () {
                         loadJson()
                     }
                 });
-                console.log(handarr[activeCard].remove())
+                console.log(activeCard)
+                $(".inHand").get(activeCard).remove()
             }
         }
     } else {
@@ -107,9 +124,9 @@ class Grid {
         this.cells = []
     }
 
-    fill(json){
+    fill(json) {
         var data = []
-        for(var j = 0;j <this.size;j++) {
+        for (var j = 0; j < this.size; j++) {
             for (var i = 0; i < this.size; i++) {
                 data[i] = json[i][j].value
             }
@@ -121,19 +138,28 @@ class Grid {
 
 }
 
-function updateGrid(grid){
+function updateGrid(grid) {
 
     rows = $(".myRow")
-    for(var i = 0;i < grid.size;i++){
-        data = rows.get(i+1).children
+    for (var i = 0; i < grid.size; i++) {
+        data = rows.get(i + 1).children
         cell_value = grid.cells[i]
-        console.log(cell_value)
-        for(var j = 0;j < grid.size;j++){
+        for (var j = 0; j < grid.size; j++) {
             value = cell_value[j]
-            data[j+1].innerHTML = value
+            console.log(data[j + 1])
+            if (data[j + 1].classList.contains("activeDiv")) {
+                var character = document.createElement("div")
+                character.className = "myCharacter"
+                character.innerHTML = value
+                var points = document.createElement("div")
+                points.className = "myPoint"
+                points.innerHTML = point[value]
+                data[j + 1].classList.add("myCard")
+                data[j + 1].appendChild(character)
+                data[j + 1].appendChild(points)
+            }
         }
     }
-
 
 
 }
@@ -156,8 +182,8 @@ function loadJson() {
 }
 
 
-$( document ).ready(function() {
-    console.log( "Document is ready, filling grid" );
+$(document).ready(function () {
+    console.log("Document is ready, filling grid");
     //loadJson();
 });
 
