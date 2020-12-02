@@ -67,43 +67,31 @@
                     <div class="container">
                         <div class="row">
                             <div class="col">
-                            @if(currPlayer equals "A") {
-                                <div class="card score active shadow bg-white rounded">
+                                <div class="card score active shadow bg-white rounded" id="scoreA">
                                     Player A: <span class="playerpoint">@playerlist("A").point</span>
                                 </div>
-                            } else {
-                                <div class="card score shadow mb-2 bg-white rounded">
-                                    Player A: <span class="playerpoint">@playerlist("A").point</span>
-                                </div>
-                            }
                             </div>
                             <div class="col">
-                            @if(currPlayer equals "B") {
-                                <div class="card score active shadow bg-white rounded">
+                                <div class="card score shadow bg-white rounded" id="scoreB">
                                     Player B: <span class="playerpoint">@playerlist("B").point</span>
                                 </div>
-                            } else {
-                                <div class="card score shadow mb-2 bg-white rounded">
-                                    Player B: <span class="playerpoint">@playerlist("B").point</span>
-                                </div>
-                            }
                             </div>
                         </div>
                     </div>
-                    <p>cards in stack: @pile.size</p>
+                    <p>cards in stack: <span id="stack">@pile.size</span></p>
                     <div class="container">
                         <div class="row">
                             <div class="col">
-                                <a type="button" class="btn btn-dark btn-block" href="@routes.HomeController.newGrid()">
-                                    new game</a>
-                                <a type="button" class="btn btn-dark btn-block" href="@routes.HomeController.switchCards(currPlayer)">
-                                    switch cards</a>
-                                <a type="button" id="set" class="btn btn-dark btn-block" href="@routes.HomeController.undo">
-                                    undo</a>
-                                <a type="button" id="set" class="btn btn-dark btn-block" href="@routes.HomeController.redo">
-                                    redo</a>
-                                <a type="button" class="btn btn-dark btn-block" id="submit" href="@routes.HomeController.submit()">
-                                    submit</a>
+                                <button type="button" id="newGameBtn" class="btn btn-dark btn-block">
+                                    new game</button>
+                                <button type="button" id="switchBtn" class="btn btn-dark btn-block">
+                                    switch cards</button>
+                                <button type="button" id="undoBtn" class="btn btn-dark btn-block">
+                                    undo</button>
+                                <button type="button" id="redoBtn" class="btn btn-dark btn-block">
+                                    redo</button>
+                                <button type="button" id="submitBtn" class="btn btn-dark btn-block">
+                                    submit</button>
                                 <button type="button" class="btn btn-dark btn-block mb-3" id="resize">
                                     resize</button>
                                 <div class="col sizes">
