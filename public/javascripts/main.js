@@ -110,17 +110,6 @@ class Grid {
             this.cells[j] = data
             data = []
         }
-
-        // for(let i = 0; i < this.size;i++){
-        //     let arr = json[i]
-        //     let data = []
-        //     for(let j = 0;j < arr.length;j++) {
-        //         console.log(arr[j])
-        //          data[j] = [arr[j].value, arr[j].kind]
-        //     }
-        //     this.cells[i] = data
-        // }
-        // console.log(this.cells)
     }
 
 
