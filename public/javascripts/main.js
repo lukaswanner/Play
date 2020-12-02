@@ -262,6 +262,7 @@ function loadPoints() {
         success: function (result) {
             $("#scoreA .playerpoint")[0].innerHTML = result.gameField.playerList.A.point
             $("#scoreB .playerpoint")[0].innerHTML = result.gameField.playerList.B.point
+            $("#ncards").html("cards in stack: " + result.gameField.pile.tilepile.length)
             if (result.status != "fc") {
                 if (curr_player == "A") {
                     $("#scoreA").removeClass("active")
