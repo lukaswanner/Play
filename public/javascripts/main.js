@@ -46,8 +46,14 @@ function setCard() {
             if (activerow[0]) {
                 let activeCard = active[1]
                 let url = "/scrabble/set/" + (activerow[1] - 1) + "/" + (i - 1) + "/" + activeCard
-                $.get(url)
-                loadJson()
+                $.ajax({
+                    method: "GET",
+                    url: url,
+
+                    success: function () {
+                        loadJson()
+                    }
+                });
                 console.log(handarr[activeCard].remove())
             }
         }
