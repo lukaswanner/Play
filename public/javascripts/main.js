@@ -260,9 +260,9 @@ function loadPoints() {
         dataType: "json",
 
         success: function (result) {
+            $("#scoreA .playerpoint")[0].innerHTML = result.gameField.playerList.A.point
+            $("#scoreB .playerpoint")[0].innerHTML = result.gameField.playerList.B.point
             if (result.status != "fc") {
-                $("#scoreA .playerpoint")[0].innerHTML = result.gameField.playerList.A.point
-                $("#scoreB .playerpoint")[0].innerHTML = result.gameField.playerList.B.point
                 if (curr_player == "A") {
                     $("#scoreA").removeClass("active")
                     $("#scoreB").addClass("active")
@@ -337,12 +337,12 @@ function initBtns() {
     })
 
     $("#submit").click(function () {
-        loadPoints()
         $.ajax({
             method: "GET",
             url: "/scrabble/submit",
 
             success: function (result) {
+                loadPoints()
                 loadHand()
             }
         });
