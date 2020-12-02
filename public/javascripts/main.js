@@ -113,29 +113,35 @@ class Grid {
 
 }
 
-function updateGrid(grid){
+function updateGrid(grid, result){
+    let rows = $(".myCell").not(".myLabel")
+    let index = 0
+    let test = result.gameField.grid.cells
 
-    rows = $(".myCell").not(".myLabel")
-    cells = []
-    index = 0
     for(var i = 0;i < grid.size;i++){
         data = []
         for(var j = 0;j < grid.size;j++){
-            data[j] = rows[index]
+            if(test[j][i].value !== "") {
+                let html = "<div class=\"myCharacter\">"+test[j][i].value+"</div>"
+                //+"<div class=\"myPoint\">"+test[j][i].value+"</div>"
+                rows[index].classList.add("myCard")
+                rows[index].innerHTML = html
+            }
             index ++
         }
-        cells[i] = data
     }
+    let html2 =""
+    //if (result.gameField.status === "pA") {
+        var newhand = result.gameField.playerList.A.hand
+    // } else {
+    //     var newhand = result.gameField.playerList.B.hand
+    // }
 
-    for(var i = 0;i < grid.size;i++){
-        data = cells[i]
-        cell_value = grid.cells[i]
-        for(var j = 0;j < grid.size;j++){
-            //data[j].html(cell_value[j])
-        }
+    for (var j = 0;j < newhand.length;j++){
+        html2 += "<div class=\"myCard inHand\"> <div class=\"myCharacter\">" +
+            newhand[j].value+"</div></div>"
     }
-
-
+    $(".myHand")[0].innerHTML = html2
 
 }
 
@@ -151,7 +157,7 @@ function loadJson() {
             grid_size = Object.keys(result.gameField.grid.cells).length
             grid = new Grid(grid_size)
             grid.fill(result.gameField.grid.cells)
-            updateGrid(grid)
+            updateGrid(grid, result)
         }
     });
 }
