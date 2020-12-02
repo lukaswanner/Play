@@ -1,20 +1,8 @@
-$("#resize").click(showbutton)
-
-$("#3x3").click(function () {
-    return resize(3)
-})
-$("#9x9").click(function () {
-    return resize(9)
-})
-
-$("#15x15").click(function () {
-    return resize(15)
-})
-
-
 let handarr = $(".inHand")
 let cellarr = $(".myCell")
 let rowarr = $(".myRow")
+
+var curr_player = "A"
 
 const point = {
     "=": 1,
@@ -47,6 +35,7 @@ $(".myCell").not(".myLabel").click(function (ev) {
     }
 })
 
+initBtns()
 
 function recolor(element, arr) {
     arr.removeClass("activeDiv")
@@ -70,8 +59,7 @@ function setCard() {
                         loadJson()
                     }
                 });
-                console.log(activeCard)
-                $(".inHand").get(activeCard).remove()
+
             }
         }
     } else {
@@ -139,15 +127,14 @@ class Grid {
 }
 
 function updateGrid(grid) {
-
     rows = $(".myRow")
     for (var i = 0; i < grid.size; i++) {
         data = rows.get(i + 1).children
         cell_value = grid.cells[i]
         for (var j = 0; j < grid.size; j++) {
             value = cell_value[j]
-            console.log(data[j + 1])
-            if (data[j + 1].classList.contains("activeDiv")) {
+            if (data[j + 1].classList.contains("activeDiv") && value != "") {
+                data[j + 1].innerHTML = ""
                 var character = document.createElement("div")
                 character.className = "myCharacter"
                 character.innerHTML = value
@@ -155,6 +142,7 @@ function updateGrid(grid) {
                 points.className = "myPoint"
                 points.innerHTML = point[value]
                 data[j + 1].classList.add("myCard")
+                data[j + 1].classList.add("set")
                 data[j + 1].appendChild(character)
                 data[j + 1].appendChild(points)
             }
@@ -162,6 +150,28 @@ function updateGrid(grid) {
     }
 
 
+}
+
+function newGrid(grid) {
+    rows = $(".myRow")
+    for (var i = 0; i < grid.size; i++) {
+        data = rows.get(i + 1).children
+        cell_value = grid.cells[i]
+        for (var j = 0; j < grid.size; j++) {
+            value = cell_value[j]
+            if (data[j + 1].classList.contains("set")) {
+                data[j + 1].classList.remove("myCard")
+                data[j + 1].classList.remove("set")
+                if (data[j + 1].classList.contains("triple")) {
+                    data[j + 1].innerHTML = "x3"
+                } else if (data[j + 1].classList.contains("double")) {
+                    data[j + 1].innerHTML = "x2"
+                } else {
+                    data[j + 1].innerHTML = ""
+                }
+            }
+        }
+    }
 }
 
 
@@ -177,13 +187,183 @@ function loadJson() {
             grid = new Grid(grid_size)
             grid.fill(result.gameField.grid.cells)
             updateGrid(grid)
+            loadHand()
         }
     });
+}
+
+function loadJsonNewGrid() {
+    $.ajax({
+        method: "GET",
+        url: "/json",
+        dataType: "json",
+
+        success: function (result) {
+            console.log(result)
+            grid_size = Object.keys(result.gameField.grid.cells).length
+            grid = new Grid(grid_size)
+            grid.fill(result.gameField.grid.cells)
+            newGrid(grid)
+            loadHand()
+        }
+    });
+}
+
+function loadHand() {
+    console.log(curr_player)
+    $.ajax({
+        method: "GET",
+        url: "/json",
+        dataType: "json",
+
+        success: function (result) {
+            console.log(result)
+            if (curr_player == "A") {
+                curr_hand = result.gameField.playerList.A.hand
+                handsize = Object.keys(result.gameField.playerList.A.hand).length
+            } else {
+                curr_hand = result.gameField.playerList.B.hand
+                handsize = Object.keys(result.gameField.playerList.B.hand).length
+            }
+            $(".myHand").empty()
+            for (var i = 0; i < handsize; i++) {
+                var card = document.createElement("div")
+                card.className = "myCard"
+                card.classList.add("inHand")
+                $(".myHand").append(card)
+            }
+            hand = $(".myCard.inHand")
+            for (var i = 0; i < handsize; i++) {
+                hand.get(i).innerHTML = ""
+                var character = document.createElement("div")
+                character.className = "myCharacter"
+                character.innerHTML = curr_hand[i].value
+                var points = document.createElement("div")
+                points.className = "myPoint"
+                points.innerHTML = point[curr_hand[i].value]
+                hand.get(i).appendChild(character)
+                hand.get(i).appendChild(points)
+            }
+            $("div.inHand").click(function (ev) {
+                return recolor(ev.currentTarget, $(".inHand"))
+            })
+        }
+    });
+
+
+}
+
+function loadPoints() {
+    $.ajax({
+        method: "GET",
+        url: "/json",
+        dataType: "json",
+
+        success: function (result) {
+            if (result.status != "fc") {
+                if (curr_player == "A") {
+                    $("#PlayerA").removeClass("active")
+                    $("#PlayerB").addClass("active")
+                    $("#PlayerPointB").innerText = result.gameField.playerList.A.point
+                    curr_player = "B"
+                } else {
+                    $("#PlayerB").removeClass("active")
+                    $("#PlayerA").addClass("active")
+                    $("#PlayerPointB").innerText = result.gameField.playerList.B.point
+                    curr_player = "A"
+                }
+            }else{
+                console.log("fc status was active")
+            }
+        }
+    })
+}
+
+function initBtns() {
+    $("#new_game").click(function () {
+        $.ajax({
+            method: "GET",
+            url: "/scrabble/new",
+
+            success: function (result) {
+                curr_player = "A"
+                loadJsonNewGrid()
+            }
+        });
+    })
+
+    $("#switch_cards").click(function () {
+        if(curr_player == "A") {
+            $.ajax({
+                method: "GET",
+                url: "/scrabble/switch/A",
+
+                success: function (result) {
+                    loadHand()
+                }
+            });
+        }else{
+            $.ajax({
+                method: "GET",
+                url: "/scrabble/switch/B",
+
+                success: function (result) {
+                    loadHand()
+                }
+            });
+        }
+    })
+
+    $("#undo").click(function () {
+        $.ajax({
+            method: "GET",
+            url: "/scrabble/undo",
+
+            success: function (result) {
+                //todo lade
+            }
+        });
+    })
+
+    $("#redo").click(function () {
+        $.ajax({
+            method: "GET",
+            url: "/scrabble/redo",
+
+            success: function (result) {
+                //todo lade
+            }
+        });
+    })
+
+    $("#submit").click(function () {
+        loadPoints()
+        $.ajax({
+            method: "GET",
+            url: "/scrabble/submit",
+
+            success: function (result) {
+                loadHand()
+            }
+        });
+    })
+
+    $("#resize").click(showbutton)
+
+    $("#3x3").click(function () {
+        return resize(3)
+    })
+    $("#9x9").click(function () {
+        return resize(9)
+    })
+
+    $("#15x15").click(function () {
+        return resize(15)
+    })
 }
 
 
 $(document).ready(function () {
     console.log("Document is ready, filling grid");
-    //loadJson();
 });
 
