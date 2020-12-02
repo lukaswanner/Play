@@ -143,6 +143,10 @@ function updateGrid(grid, result){
     }
     $(".myHand")[0].innerHTML = html2
 
+    $("div.inHand").click(function (ev) {
+        return recolor(ev.currentTarget, $(".inHand"))
+    })
+
 }
 
 
