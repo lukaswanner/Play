@@ -103,6 +103,7 @@ class Grid {
     fill(json){
         for(let i = 0; i < this.size;i++){
             let arr = json[i]
+            console.log(arr)
             let data = []
             for(let j = 0;j < arr.length;j++) {
                  data[j] = [arr[j].value, arr[j].kind]
@@ -115,23 +116,14 @@ class Grid {
 
 function updateGrid(grid){
 
-    rows = $(".myCell").not(".myLabel")
-    cells = []
-    index = 0
+    rows = $(".myRow")
     for(var i = 0;i < grid.size;i++){
-        data = []
-        for(var j = 0;j < grid.size;j++){
-            data[j] = rows[index]
-            index ++
-        }
-        cells[i] = data
-    }
-    for(var i = 0;i < grid.size;i++){
-        data = cells[i]
+        data = rows.get(i+1).children
         cell_value = grid.cells[i]
+        console.log(cell_value)
         for(var j = 0;j < grid.size;j++){
-            el = data[j]
-            el.innerHTML("test")
+            value = cell_value[j]
+            data[j+1].innerHTML = value[0]
         }
     }
 
