@@ -48,6 +48,7 @@ function setCard() {
                 let url = "/scrabble/set/" + (activerow[1] - 1) + "/" + (i - 1) + "/" + activeCard
                 $.get(url)
                 loadJson()
+                console.log(handarr[activeCard].remove())
             }
         }
     } else {
