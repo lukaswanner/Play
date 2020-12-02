@@ -46,8 +46,8 @@ function setCard() {
             if (activerow[0]) {
                 let activeCard = active[1]
                 let url = "/scrabble/set/" + (activerow[1] - 1) + "/" + (i - 1) + "/" + activeCard
-                // document.location.replace(url)
-                test()
+                //document.location.replace(url)
+                loadJson()
             }
         }
     } else {
@@ -93,8 +93,42 @@ function resize(size) {
     }
 }
 
+class Grid {
 
-function test() {
+    constructor(size) {
+        this.size = size
+        this.cells = []
+    }
+
+    fill(json){
+        for(let i = 0; i < this.size;i++){
+            let arr = json[i]
+            let data = []
+            for(let j = 0;j < arr.length;j++) {
+                 data[j] = [arr[j].value, arr[j].kind]
+            }
+            this.cells[i] = data
+        }
+    }
+
+}
+
+function updateGrid(grid){
+
+    cells = $(".myCell").not(".myLabel")
+    index = 0
+    for(var i = 0;i < grid.cells.length;i++){
+        data = grid.cells[i]
+        for(var j = 0;j < data.length;j++){
+            cells[index].classList.add("geht")
+            index +=1
+        }
+    }
+
+}
+
+
+function loadJson() {
     $.ajax({
         method: "GET",
         url: "/json",
@@ -102,32 +136,17 @@ function test() {
 
         success: function (result) {
             console.log(result)
+            grid_size = Object.keys(result.gameField.grid.cells).length
+            grid = new Grid(grid_size)
+            grid.fill(result.gameField.grid.cells)
+            updateGrid(grid)
         }
     });
 }
 
 
-//old js code
-// for (var i = 0; i < handarr.length; i++) {
-//     let element = handarr[i]
-//
-//     element.onclick = function () {
-//         return recolor(element, handarr)
-//     }
-//
-// }
+$( document ).ready(function() {
+    console.log( "Document is ready, filling grid" );
+    //loadJson();
+});
 
-
-// for (var i = 0; i < cellarr.length; i++) {
-//     let name = cellarr[i].className
-//     let element = cellarr[i]
-//     if (!name.includes("myLabel")) {
-//         element.onclick = function () {
-//             if (!element.classList.contains("activeDiv")) {
-//                 return recolor(element, cellarr)
-//             } else {
-//                 return setCard()
-//             }
-//         }
-//     }
-// }
