@@ -143,6 +143,8 @@ function updateGrid(grid) {
                 points.innerHTML = point[value]
                 data[j + 1].classList.add("myCard")
                 data[j + 1].classList.add("set")
+                $(".undo").removeClass("undo")
+                data[j + 1].classList.add("undo")
                 data[j + 1].appendChild(character)
                 data[j + 1].appendChild(points)
             }
@@ -160,6 +162,28 @@ function newGrid(grid) {
         for (var j = 0; j < grid.size; j++) {
             value = cell_value[j]
             if (data[j + 1].classList.contains("set")) {
+                data[j + 1].classList.remove("myCard")
+                data[j + 1].classList.remove("set")
+                if (data[j + 1].classList.contains("triple")) {
+                    data[j + 1].innerHTML = "x3"
+                } else if (data[j + 1].classList.contains("double")) {
+                    data[j + 1].innerHTML = "x2"
+                } else {
+                    data[j + 1].innerHTML = ""
+                }
+            }
+        }
+    }
+}
+
+function undoGrid(grid) {
+    rows = $(".myRow")
+    for (var i = 0; i < grid.size; i++) {
+        data = rows.get(i + 1).children
+        cell_value = grid.cells[i]
+        for (var j = 0; j < grid.size; j++) {
+            value = cell_value[j]
+            if (data[j + 1].classList.contains("undo")) {
                 data[j + 1].classList.remove("myCard")
                 data[j + 1].classList.remove("set")
                 if (data[j + 1].classList.contains("triple")) {
@@ -204,6 +228,23 @@ function loadJsonNewGrid() {
             grid = new Grid(grid_size)
             grid.fill(result.gameField.grid.cells)
             newGrid(grid)
+            loadHand()
+        }
+    });
+}
+
+function loadUndoGrid() {
+    $.ajax({
+        method: "GET",
+        url: "/json",
+        dataType: "json",
+
+        success: function (result) {
+            console.log(result)
+            grid_size = Object.keys(result.gameField.grid.cells).length
+            grid = new Grid(grid_size)
+            grid.fill(result.gameField.grid.cells)
+            undoGrid(grid)
             loadHand()
         }
     });
@@ -319,9 +360,8 @@ function initBtns() {
         $.ajax({
             method: "GET",
             url: "/scrabble/undo",
-
             success: function (result) {
-                //todo lade
+                loadUndoGrid()
             }
         });
     })
