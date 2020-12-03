@@ -4,13 +4,23 @@ import de.htwg.se.scrabble.Scrabble
 import javax.inject._
 import play.api._
 import play.api.mvc._
+import play.api.libs.streams.ActorFlow
+import akka.actor.ActorSystem
+import akka.stream.Materializer
+import akka.actor._
+import de.htwg.se.scrabble.controller.controllerComponent.GridSizeChanged
+import de.htwg.se.scrabble.controller.controllerComponent.InvalidEquation
+import de.htwg.se.scrabble.controller.controllerComponent.GameFieldChanged
+import de.htwg.se.scrabble.controller.controllerComponent.CardsChanged
+
+import scala.swing.Reactor
 
 /**
  * This controller creates an `Action` to handle HTTP requests to the
  * application's home page.
  */
 @Singleton
-class HomeController @Inject()(val controllerComponents: ControllerComponents) extends BaseController {
+class HomeController @Inject()(cc: ControllerComponents)(implicit system: ActorSystem, mat: Materializer) extends AbstractController(cc) {
 
   val gamecontroller = Scrabble.controller
 
@@ -46,7 +56,7 @@ class HomeController @Inject()(val controllerComponents: ControllerComponents) e
     Ok(views.html.scrabble(gamecontroller))
   }
 
-  def switchCards(currPlayer:String) = Action { implicit request: Request[AnyContent] =>
+  def switchCards(currPlayer: String) = Action { implicit request: Request[AnyContent] =>
     gamecontroller.changeHand(currPlayer)
     Ok(views.html.scrabble(gamecontroller))
   }
@@ -61,13 +71,47 @@ class HomeController @Inject()(val controllerComponents: ControllerComponents) e
     Ok(views.html.scrabble(gamecontroller))
   }
 
-  def resize(size:Int) = Action { implicit request: Request[AnyContent] =>
+  def resize(size: Int) = Action { implicit request: Request[AnyContent] =>
     gamecontroller.createFixedSizeGameField(size)
     Ok(views.html.scrabble(gamecontroller))
   }
 
   def gridToJson = Action {
     Ok(gamecontroller.memToJson(gamecontroller.createMemento()))
+  }
+
+  def socket = WebSocket.accept[String, String] { request =>
+    ActorFlow.actorRef { out =>
+      println("Connect received")
+      ScrabbleWebSocketActorFactory.create(out)
+    }
+  }
+
+  object ScrabbleWebSocketActorFactory {
+    def create(out: ActorRef) = {
+      Props(new ScrabbleWebSocketActorFactory(out))
+    }
+  }
+
+  class ScrabbleWebSocketActorFactory(out: ActorRef) extends Actor with Reactor {
+    listenTo(gamecontroller)
+
+    def receive = {
+      case msg: String =>
+        out ! (gamecontroller.memToJson(gamecontroller.createMemento()).toString())
+        println("Sent Json to Client" + msg)
+    }
+
+    reactions += {
+      case event: GameFieldChanged => sendJsonToClient
+      case event: CardsChanged => sendJsonToClient
+      case event: InvalidEquation => sendJsonToClient
+    }
+
+    def sendJsonToClient = {
+      println("Received event from Controller")
+      out ! (gamecontroller.memToJson(gamecontroller.createMemento()).toString())
+    }
   }
 
 }

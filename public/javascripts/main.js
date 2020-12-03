@@ -32,8 +32,6 @@ $(".myCell").not(".myLabel").click(function (ev) {
     }
 })
 
-initBtns()
-
 function recolor(element, arr) {
     arr.removeClass("activeDiv")
     element.classList.add("activeDiv")
@@ -441,8 +439,43 @@ function initBtns() {
     })
 }
 
+function connectWebSocket() {
+    var websocket = new WebSocket("ws://localhost:9000/websocket");
+    websocket.setTimeout = 1000
+
+    websocket.onopen = function(event) {
+        console.log("Connected to Websocket");
+    }
+
+    websocket.onclose = function (code) {
+        console.log(code)
+        console.log('Connection with Websocket Closed!');
+    };
+
+    websocket.onerror = function (error) {
+        console.log('Error in Websocket Occured: ' + error);
+    };
+
+    websocket.onmessage = function (e) {
+        if (typeof e.data === "string") {
+            console.log("websockets geht")
+            let res = JSON.parse(e.data)
+            console.log(res)
+            let grid_size = Object.keys(res.gameField.grid.cells).length
+            let grid = new Grid(grid_size)
+            console.log(grid.cells)
+            grid.fill(res.gameField.grid.cells)
+            updateGrid(grid)
+            loadHand()
+        }
+    };
+}
+
+
 
 $(document).ready(function () {
     console.log("Document is ready, filling grid");
+    initBtns()
+    connectWebSocket()
 });
 
