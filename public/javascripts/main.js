@@ -300,8 +300,8 @@ function loadHand() {
 
         success: function (result) {
             console.log(result)
-            let curr_hand = ""
-            let hand_size = 0
+            let curr_hand
+            let hand_size
             if (curr_player === "A") {
                 curr_hand = result.gameField.playerList.A.hand
                 hand_size = Object.keys(result.gameField.playerList.A.hand).length
@@ -437,6 +437,7 @@ function initBtns() {
     $("#3x3").click(function () {
         return resize(3)
     })
+
     $("#9x9").click(function () {
         return resize(9)
     })
@@ -450,7 +451,7 @@ function connectWebSocket() {
     var websocket = new WebSocket("ws://localhost:9000/websocket");
     websocket.setTimeout = 1000
 
-    websocket.onopen = function (event) {
+    websocket.onopen = function () {
         console.log("Connected to Websocket");
     }
 
@@ -467,10 +468,10 @@ function connectWebSocket() {
         if (typeof e.data === "string") {
             let res = JSON.parse(e.data)
             console.log(res)
-            if (res.Event === "CardsChanged()"){
+            if (res.Event === "CardsChanged()") {
                 console.log("CARDS CHANGED")
                 //loadHand()
-            }else {
+            } else {
                 let grid_size = Object.keys(res.gameField.grid.cells).length
                 let grid = new Grid(grid_size)
                 grid.fill(res.gameField.grid.cells)
