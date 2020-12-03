@@ -124,28 +124,25 @@ function newGrid(result) {
         html+="<div class=\"myRow\">" +
             "<div class=\"myCell myLabel\">"+(col+1)+"</div>"
             for(let row =0;row < gridsize; row++) {
-                if(grid[row][col].kind === "t") {
-                    html+="<div class=\"myCell triple\">x3</div>"
-                } else if(grid[row][col].kind === "d") {
-                    html+="<div class=\"myCell double\">x2</div>"
+                if(grid[row][col].value !== "") {
+                    html+="<div class=\"myCard myCell\">" +
+                        "    <div class=\"myCharacter\">"+grid[row][col].value+"</div>" +
+                        "    <div class=\"myPoint\">"+point[grid[row][col].value]+"</div>" +
+                        "</div>"
                 } else {
-                    html+="<div class=\"myCell normal\"> </div>"
+                    if(grid[row][col].kind === "t") {
+                        html+="<div class=\"myCell triple\">x3</div>"
+                    } else if(grid[row][col].kind === "d") {
+                        html+="<div class=\"myCell double\">x2</div>"
+                    } else {
+                        html+="<div class=\"myCell normal\"> </div>"
+                    }
                 }
             }
         html+="</div>"
     }
     $(".myGrid")[0].innerHTML = html
-    $("div.inHand").click(function (ev) {
-        return recolor(ev.currentTarget, $(".inHand"))
-    })
-
-    $(".myCell").not(".myLabel").click(function (ev) {
-        if (!ev.currentTarget.classList.contains("activeDiv")) {
-            return recolor(ev.currentTarget, $(".myCell"))
-        } else {
-            return setCard()
-        }
-    })
+    initbtns()
 }
 
 function updateHand(result) {
@@ -267,7 +264,16 @@ function initbtns() {
         method: "GET",
         url: "/scrabble/undo",
         success: function () {
-            loadJson()
+            $.ajax({
+                method: "GET",
+                url: "/json",
+                dataType: "json",
+
+                success: function (result) {
+                    newGrid(result)
+                    loadJson()
+                }
+            })
         }
     })})
 
@@ -275,7 +281,16 @@ function initbtns() {
         method: "GET",
         url: "/scrabble/redo",
         success: function () {
-            loadJson()
+            $.ajax({
+                method: "GET",
+                url: "/json",
+                dataType: "json",
+
+                success: function (result) {
+                    newGrid(result)
+                    loadJson()
+                }
+            })
         }
     })})
     $("#3x3").click(function () {
@@ -293,10 +308,9 @@ function initbtns() {
         return recolor(ev.currentTarget, $(".inHand"))
     })
 
-
     $(".myCell").not(".myLabel").click(function (ev) {
         if (!ev.currentTarget.classList.contains("activeDiv")) {
-            return recolor(ev.currentTarget, cellarr)
+            return recolor(ev.currentTarget, $(".myCell"))
         } else {
             return setCard()
         }
