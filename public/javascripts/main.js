@@ -228,7 +228,6 @@ function loadJson() {
         dataType: "json",
 
         success: function (result) {
-            console.log(result)
             let grid_size = Object.keys(result.gameField.grid.cells).length
             let grid = new Grid(grid_size)
             grid.fill(result.gameField.grid.cells)
@@ -245,7 +244,6 @@ function loadJsonNewGrid() {
         dataType: "json",
 
         success: function (result) {
-            console.log(result)
             let grid_size = Object.keys(result.gameField.grid.cells).length
             let grid = new Grid(grid_size)
             grid.fill(result.gameField.grid.cells)
@@ -262,7 +260,6 @@ function loadUndoGrid() {
         dataType: "json",
 
         success: function (result) {
-            console.log(result)
             let grid_size = Object.keys(result.gameField.grid.cells).length
             let grid = new Grid(grid_size)
             grid.fill(result.gameField.grid.cells)
@@ -279,7 +276,6 @@ function loadRedoGrid() {
         dataType: "json",
 
         success: function (result) {
-            console.log(result)
             let grid_size = Object.keys(result.gameField.grid.cells).length
             let grid = new Grid(grid_size)
             grid.fill(result.gameField.grid.cells)
@@ -296,7 +292,6 @@ function loadHand() {
         dataType: "json",
 
         success: function (result) {
-            console.log(result)
             let curr_hand
             let hand_size
             if (result.status === "pA" || result.status === "fc") {
@@ -336,27 +331,23 @@ function loadHand() {
 
 function loadPoints() {
     $.ajax({
-        method: "GET",
-        url: "/json",
-        dataType: "json",
+            method: "GET",
+            url: "/json",
+            dataType: "json",
 
-        success: function (result) {
-            $("#scoreA .playerpoint")[0].innerHTML = result.gameField.playerList.A.point
-            $("#scoreB .playerpoint")[0].innerHTML = result.gameField.playerList.B.point
-            $("#ncards").html("cards in stack: " + result.gameField.pile.tilepile.length)
-            if (result.status !== "fc") {
-                if (result.status === "pA" || result.status === "fc") {
+            success: function (result) {
+                $("#scoreA .playerpoint")[0].innerHTML = result.gameField.playerList.A.point
+                $("#scoreB .playerpoint")[0].innerHTML = result.gameField.playerList.B.point
+                $("#ncards").html("cards in stack: " + result.gameField.pile.tilepile.length)
+                if (result.status === "pB") {
                     $("#scoreA").removeClass("active")
                     $("#scoreB").addClass("active")
                 } else {
                     $("#scoreB").removeClass("active")
                     $("#scoreA").addClass("active")
                 }
-            } else {
-                console.log("fc status was active")
             }
-        }
-    })
+        })
 }
 
 function initBtns() {
@@ -451,7 +442,7 @@ function initBtns() {
 
 function connectWebSocket() {
     var websocket = new WebSocket("ws://localhost:9000/websocket");
-    websocket.setTimeout = 1000
+    websocket.setTimeout
 
     websocket.onopen = function () {
         console.log("Connected to Websocket");
@@ -473,7 +464,7 @@ function connectWebSocket() {
             if (res.Event === "CardsChanged()") {
                 console.log("CARDS CHANGED")
                 loadHand()
-            } else if (res.Event === "InvalidEquation()" || res.Event === "ButtonSet()") {
+            } else if (res.Event === "InvalidEquation()") {
                 alert("Equation is not valid!")
                 let grid_size = Object.keys(res.gameField.grid.cells).length
                 let grid = new Grid(grid_size)
@@ -485,8 +476,15 @@ function connectWebSocket() {
                 let grid_size = Object.keys(res.gameField.grid.cells).length
                 let grid = new Grid(grid_size)
                 grid.fill(res.gameField.grid.cells)
-                updateGrid(grid)
+                console.log(res.status)
+                if (res.status === "fc") {
+                    newGrid(grid)
+                } else {
+
+                    updateGrid(grid)
+                }
                 loadHand()
+                loadPoints()
             }
         }
     };
