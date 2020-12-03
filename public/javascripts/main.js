@@ -1,16 +1,5 @@
 $("#resize").click(showbutton)
 
-$("#3x3").click(function () {
-    return resize(3)
-})
-$("#9x9").click(function () {
-    return resize(9)
-})
-
-$("#15x15").click(function () {
-    return resize(15)
-})
-
 let cellarr = $(".myCell")
 let rowarr = $(".myRow")
 
@@ -32,20 +21,6 @@ const point = {
     "0": 1
 }
 
-$("div.inHand").click(function (ev) {
-    return recolor(ev.currentTarget, $(".inHand"))
-})
-
-
-$(".myCell").not(".myLabel").click(function (ev) {
-    if (!ev.currentTarget.classList.contains("activeDiv")) {
-        return recolor(ev.currentTarget, cellarr)
-    } else {
-        return setCard()
-    }
-})
-
-
 function recolor(element, arr) {
     arr.removeClass("activeDiv")
     element.classList.add("activeDiv")
@@ -64,7 +39,6 @@ function setCard() {
                 $.ajax({
                     method: "GET",
                     url: url,
-
                     success: function () {
                         loadJson()
                     }
@@ -102,18 +76,6 @@ function showbutton() {
     }
 }
 
-function resize(size) {
-    document.location.replace("/scrabble/resize/" + size)
-    handarr = document.getElementsByClassName("inHand")
-    cellarr = document.getElementsByClassName("myCell")
-    rowarr = document.getElementsByClassName("myCol")
-
-    let buttons = document.getElementsByClassName("possibleSize")
-    for (var i = 0; i < buttons.length; i++) {
-        buttons[i].classList.add("d-none")
-    }
-}
-
 class Grid {
     constructor(size) {
         this.size = size
@@ -130,7 +92,6 @@ class Grid {
             this.cells[i] = data
         }
     }
-
 }
 
 function updateGrid(grid, result){
@@ -151,23 +112,40 @@ function updateGrid(grid, result){
     }
 }
 
-function newGrid() {
-    let cells = $(".myCell").not(".myLabel")
-    let index = 0
-
-    for(var i = 0;i < grid.size;i++){
-        for(var j = 0;j < grid.size;j++){
-            cells[index].classList.remove("myCard")
-            if(cells[index].classList.contains("triple")) {
-                cells[index].innerHTML = "x3"
-            } else if (cells[index].classList.contains("double")) {
-                cells[index].innerHTML = "x2"
-            } else {
-                cells[index].innerHTML = ""
-            }
-            index ++
-        }
+function newGrid(result) {
+    let grid = result.gameField.grid.cells
+    let gridsize = result.gameField.grid.cells.length
+    let html = "<div class=\"myRow\"> <div class=\"myCell myLabel\"> </div>"
+    for(let i = 1;i < gridsize + 1;i++) {
+        html += "<div class=\"myCell myLabel\">"+i+"</div>"
     }
+    html += "</div>"
+    for(let col = 0;col < gridsize;col++) {
+        html+="<div class=\"myRow\">" +
+            "<div class=\"myCell myLabel\">"+(col+1)+"</div>"
+            for(let row =0;row < gridsize; row++) {
+                if(grid[row][col].kind === "t") {
+                    html+="<div class=\"myCell triple\">x3</div>"
+                } else if(grid[row][col].kind === "d") {
+                    html+="<div class=\"myCell double\">x2</div>"
+                } else {
+                    html+="<div class=\"myCell normal\"> </div>"
+                }
+            }
+        html+="</div>"
+    }
+    $(".myGrid")[0].innerHTML = html
+    $("div.inHand").click(function (ev) {
+        return recolor(ev.currentTarget, $(".inHand"))
+    })
+
+    $(".myCell").not(".myLabel").click(function (ev) {
+        if (!ev.currentTarget.classList.contains("activeDiv")) {
+            return recolor(ev.currentTarget, $(".myCell"))
+        } else {
+            return setCard()
+        }
+    })
 }
 
 function updateHand(result) {
@@ -203,6 +181,26 @@ function updateInfo(result) {
     $("#stack")[0].innerText = result.gameField.pile.tilepile.length
 }
 
+function resize(size) {
+    $.ajax({
+        method: "GET",
+        url: "/scrabble/resize/" + size,
+
+        success: function () {
+            $.ajax({
+                method: "GET",
+                url: "/json",
+                dataType: "json",
+
+                success: function (result) {
+                    newGrid(result)
+                    loadJson()
+                }
+            })
+        }
+    })
+
+}
 
 function loadJson() {
     $.ajax({
@@ -227,8 +225,16 @@ function initbtns() {
         method: "GET",
         url: "/scrabble/new",
         success: function () {
-            loadJson()
-            newGrid()
+            $.ajax({
+                method: "GET",
+                url: "/json",
+                dataType: "json",
+
+                success: function (result) {
+                    newGrid(result)
+                    loadJson()
+                }
+            })
         }
     })})
 
@@ -272,7 +278,29 @@ function initbtns() {
             loadJson()
         }
     })})
+    $("#3x3").click(function () {
+        return resize(3)
+    })
+    $("#9x9").click(function () {
+        return resize(9)
+    })
 
+    $("#15x15").click(function () {
+        return resize(15)
+    })
+
+    $("div.inHand").click(function (ev) {
+        return recolor(ev.currentTarget, $(".inHand"))
+    })
+
+
+    $(".myCell").not(".myLabel").click(function (ev) {
+        if (!ev.currentTarget.classList.contains("activeDiv")) {
+            return recolor(ev.currentTarget, cellarr)
+        } else {
+            return setCard()
+        }
+    })
 }
 
 
