@@ -142,7 +142,17 @@ function newGrid(result) {
         html+="</div>"
     }
     $(".myGrid")[0].innerHTML = html
-    initbtns()
+    $("div.inHand").click(function (ev) {
+        return recolor(ev.currentTarget, $(".inHand"))
+    })
+
+    $(".myCell").not(".myLabel").click(function (ev) {
+        if (!ev.currentTarget.classList.contains("activeDiv")) {
+            return recolor(ev.currentTarget, $(".myCell"))
+        } else {
+            return setCard()
+        }
+    })
 }
 
 function updateHand(result) {
