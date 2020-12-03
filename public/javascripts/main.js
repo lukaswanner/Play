@@ -1,8 +1,5 @@
-let handarr = $(".inHand")
-let cellarr = $(".myCell")
-let rowarr = $(".myRow")
 
-var curr_player = "A"
+let curr_player = "A"
 
 const point = {
     "=": 1,
@@ -23,13 +20,13 @@ const point = {
 }
 
 $("div.inHand").click(function (ev) {
-    return recolor(ev.currentTarget, handarr)
+    return recolor(ev.currentTarget, $(".inHand"))
 })
 
 
 $(".myCell").not(".myLabel").click(function (ev) {
     if (!ev.currentTarget.classList.contains("activeDiv")) {
-        return recolor(ev.currentTarget, cellarr)
+        return recolor(ev.currentTarget,  $(".myCell"))
     } else {
         return setCard()
     }
@@ -45,8 +42,8 @@ function recolor(element, arr) {
 function setCard() {
     let active = isActive($(".inHand"))
     if (active[0]) {
-        for (var i = 0; i < rowarr.length; i++) {
-            let row = rowarr[i]
+        for (let i = 0; i < $(".myRow").length; i++) {
+            let row = $(".myRow").get(i)
             let cells = row.getElementsByClassName("myCell")
             let activerow = isActive(cells)
             if (activerow[0]) {
@@ -70,7 +67,7 @@ function setCard() {
 
 
 function isActive(array) {
-    for (var i = 0; i < array.length; i++) {
+    for (let i = 0; i < array.length; i++) {
         let element = array[i]
         if (element.classList.contains("activeDiv")) {
             return [true, i]
@@ -83,11 +80,11 @@ function isActive(array) {
 function showbutton() {
     let buttons = document.getElementsByClassName("possibleSize")
     if (buttons[0].classList.contains("d-none")) {
-        for (var i = 0; i < buttons.length; i++) {
+        for (let i = 0; i < buttons.length; i++) {
             buttons[i].classList.remove("d-none")
         }
     } else {
-        for (var i = 0; i < buttons.length; i++) {
+        for (let i = 0; i < buttons.length; i++) {
             buttons[i].classList.add("d-none")
         }
     }
@@ -95,12 +92,9 @@ function showbutton() {
 
 function resize(size) {
     document.location.replace("/scrabble/resize/" + size)
-    handarr = document.getElementsByClassName("inHand")
-    cellarr = document.getElementsByClassName("myCell")
-    rowarr = document.getElementsByClassName("myCol")
 
     let buttons = document.getElementsByClassName("possibleSize")
-    for (var i = 0; i < buttons.length; i++) {
+    for (let i = 0; i < buttons.length; i++) {
         buttons[i].classList.add("d-none")
     }
 }
@@ -113,9 +107,9 @@ class Grid {
     }
 
     fill(json) {
-        var data = []
-        for (var j = 0; j < this.size; j++) {
-            for (var i = 0; i < this.size; i++) {
+        let data = []
+        for (let j = 0; j < this.size; j++) {
+            for (let i = 0; i < this.size; i++) {
                 data[i] = json[i][j].value
             }
             this.cells[j] = data
@@ -127,18 +121,18 @@ class Grid {
 }
 
 function updateGrid(grid) {
-    rows = $(".myRow")
-    for (var i = 0; i < grid.size; i++) {
-        data = rows.get(i + 1).children
-        cell_value = grid.cells[i]
-        for (var j = 0; j < grid.size; j++) {
-            value = cell_value[j]
-            if (data[j + 1].classList.contains("activeDiv") && value != "") {
+    let rows = $(".myRow")
+    for (let i = 0; i < grid.size; i++) {
+        let data = rows.get(i + 1).children
+        let cell_value = grid.cells[i]
+        for (let j = 0; j < grid.size; j++) {
+            let value = cell_value[j]
+            if (data[j + 1].classList.contains("activeDiv") && value !== "") {
                 data[j + 1].innerHTML = ""
-                var character = document.createElement("div")
+                let character = document.createElement("div")
                 character.className = "myCharacter"
                 character.innerHTML = value
-                var points = document.createElement("div")
+                let points = document.createElement("div")
                 points.className = "myPoint"
                 points.innerHTML = point[value]
                 data[j + 1].classList.add("myCard")
@@ -156,12 +150,10 @@ function updateGrid(grid) {
 }
 
 function newGrid(grid) {
-    rows = $(".myRow")
-    for (var i = 0; i < grid.size; i++) {
-        data = rows.get(i + 1).children
-        cell_value = grid.cells[i]
-        for (var j = 0; j < grid.size; j++) {
-            value = cell_value[j]
+    let rows = $(".myRow")
+    for (let i = 0; i < grid.size; i++) {
+        let data = rows.get(i + 1).children
+        for (let j = 0; j < grid.size; j++) {
             if (data[j + 1].classList.contains("set")) {
                 data[j + 1].classList.remove("myCard")
                 data[j + 1].classList.remove("set")
@@ -178,12 +170,10 @@ function newGrid(grid) {
 }
 
 function undoGrid(grid) {
-    rows = $(".myRow")
-    for (var i = 0; i < grid.size; i++) {
-        data = rows.get(i + 1).children
-        cell_value = grid.cells[i]
-        for (var j = 0; j < grid.size; j++) {
-            value = cell_value[j]
+    let rows = $(".myRow")
+    for (let i = 0; i < grid.size; i++) {
+        let data = rows.get(i + 1).children
+        for (let j = 0; j < grid.size; j++) {
             if (data[j + 1].classList.contains("undo")) {
                 data[j + 1].classList.remove("myCard")
                 data[j + 1].classList.remove("set")
@@ -201,18 +191,18 @@ function undoGrid(grid) {
 }
 
 function redoGrid(grid) {
-    rows = $(".myRow")
-    for (var i = 0; i < grid.size; i++) {
-        data = rows.get(i + 1).children
-        cell_value = grid.cells[i]
-        for (var j = 0; j < grid.size; j++) {
-            value = cell_value[j]
+    let rows = $(".myRow")
+    for (let i = 0; i < grid.size; i++) {
+        let data = rows.get(i + 1).children
+        let cell_value = grid.cells[i]
+        for (let j = 0; j < grid.size; j++) {
+            let value = cell_value[j]
             if (data[j + 1].classList.contains("redo")) {
                 data[j + 1].innerHTML = ""
-                var character = document.createElement("div")
+                let character = document.createElement("div")
                 character.className = "myCharacter"
                 character.innerHTML = value
-                var points = document.createElement("div")
+                let points = document.createElement("div")
                 points.className = "myPoint"
                 points.innerHTML = point[value]
                 data[j + 1].classList.add("myCard")
@@ -228,7 +218,6 @@ function redoGrid(grid) {
 }
 
 
-
 function loadJson() {
     $.ajax({
         method: "GET",
@@ -237,8 +226,8 @@ function loadJson() {
 
         success: function (result) {
             console.log(result)
-            grid_size = Object.keys(result.gameField.grid.cells).length
-            grid = new Grid(grid_size)
+            let grid_size = Object.keys(result.gameField.grid.cells).length
+            let grid = new Grid(grid_size)
             grid.fill(result.gameField.grid.cells)
             updateGrid(grid)
             loadHand()
@@ -254,8 +243,8 @@ function loadJsonNewGrid() {
 
         success: function (result) {
             console.log(result)
-            grid_size = Object.keys(result.gameField.grid.cells).length
-            grid = new Grid(grid_size)
+            let grid_size = Object.keys(result.gameField.grid.cells).length
+            let grid = new Grid(grid_size)
             grid.fill(result.gameField.grid.cells)
             newGrid(grid)
             loadHand()
@@ -271,8 +260,8 @@ function loadUndoGrid() {
 
         success: function (result) {
             console.log(result)
-            grid_size = Object.keys(result.gameField.grid.cells).length
-            grid = new Grid(grid_size)
+            let grid_size = Object.keys(result.gameField.grid.cells).length
+            let grid = new Grid(grid_size)
             grid.fill(result.gameField.grid.cells)
             undoGrid(grid)
             loadHand()
@@ -288,8 +277,8 @@ function loadRedoGrid() {
 
         success: function (result) {
             console.log(result)
-            grid_size = Object.keys(result.gameField.grid.cells).length
-            grid = new Grid(grid_size)
+            let grid_size = Object.keys(result.gameField.grid.cells).length
+            let grid = new Grid(grid_size)
             grid.fill(result.gameField.grid.cells)
             redoGrid(grid)
             loadHand()
@@ -306,27 +295,29 @@ function loadHand() {
 
         success: function (result) {
             console.log(result)
-            if (curr_player == "A") {
+            let curr_hand = ""
+            let hand_size = 0
+            if (curr_player === "A") {
                 curr_hand = result.gameField.playerList.A.hand
-                handsize = Object.keys(result.gameField.playerList.A.hand).length
+                hand_size = Object.keys(result.gameField.playerList.A.hand).length
             } else {
                 curr_hand = result.gameField.playerList.B.hand
-                handsize = Object.keys(result.gameField.playerList.B.hand).length
+                hand_size = Object.keys(result.gameField.playerList.B.hand).length
             }
             $(".myHand").empty()
-            for (var i = 0; i < handsize; i++) {
-                var card = document.createElement("div")
+            for (let i = 0; i < hand_size; i++) {
+                let card = document.createElement("div")
                 card.className = "myCard"
                 card.classList.add("inHand")
                 $(".myHand").append(card)
             }
-            hand = $(".myCard.inHand")
-            for (var i = 0; i < handsize; i++) {
+            let hand = $(".myCard.inHand")
+            for (let i = 0; i < hand_size; i++) {
                 hand.get(i).innerHTML = ""
-                var character = document.createElement("div")
+                let character = document.createElement("div")
                 character.className = "myCharacter"
                 character.innerHTML = curr_hand[i].value
-                var points = document.createElement("div")
+                let points = document.createElement("div")
                 points.className = "myPoint"
                 points.innerHTML = point[curr_hand[i].value]
                 hand.get(i).appendChild(character)
@@ -351,8 +342,8 @@ function loadPoints() {
             $("#scoreA .playerpoint")[0].innerHTML = result.gameField.playerList.A.point
             $("#scoreB .playerpoint")[0].innerHTML = result.gameField.playerList.B.point
             $("#ncards").html("cards in stack: " + result.gameField.pile.tilepile.length)
-            if (result.status != "fc") {
-                if (curr_player == "A") {
+            if (result.status !== "fc") {
+                if (curr_player === "A") {
                     $("#scoreA").removeClass("active")
                     $("#scoreB").addClass("active")
                     curr_player = "B"
@@ -361,7 +352,7 @@ function loadPoints() {
                     $("#scoreA").addClass("active")
                     curr_player = "A"
                 }
-            }else{
+            } else {
                 console.log("fc status was active")
             }
         }
@@ -374,7 +365,7 @@ function initBtns() {
             method: "GET",
             url: "/scrabble/new",
 
-            success: function (result) {
+            success: function () {
                 curr_player = "A"
                 loadJsonNewGrid()
             }
@@ -382,21 +373,21 @@ function initBtns() {
     })
 
     $("#switch_cards").click(function () {
-        if(curr_player == "A") {
+        if (curr_player === "A") {
             $.ajax({
                 method: "GET",
                 url: "/scrabble/switch/A",
 
-                success: function (result) {
+                success: function () {
                     loadHand()
                 }
             });
-        }else{
+        } else {
             $.ajax({
                 method: "GET",
                 url: "/scrabble/switch/B",
 
-                success: function (result) {
+                success: function () {
                     loadHand()
                 }
             });
@@ -407,7 +398,7 @@ function initBtns() {
         $.ajax({
             method: "GET",
             url: "/scrabble/undo",
-            success: function (result) {
+            success: function () {
                 loadUndoGrid()
             }
         });
@@ -418,7 +409,7 @@ function initBtns() {
             method: "GET",
             url: "/scrabble/redo",
 
-            success: function (result) {
+            success: function () {
                 loadRedoGrid()
             }
         });
@@ -429,7 +420,7 @@ function initBtns() {
             method: "GET",
             url: "/scrabble/submit",
 
-            success: function (result) {
+            success: function () {
                 loadPoints()
                 loadHand()
             }
