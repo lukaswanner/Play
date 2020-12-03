@@ -9,12 +9,10 @@ import akka.actor.ActorSystem
 import akka.stream.Materializer
 import akka.actor._
 import akka.io.Tcp.Event
-import de.htwg.se.scrabble.controller.controllerComponent.GridSizeChanged
-import de.htwg.se.scrabble.controller.controllerComponent.InvalidEquation
-import de.htwg.se.scrabble.controller.controllerComponent.GameFieldChanged
-import de.htwg.se.scrabble.controller.controllerComponent.CardsChanged
+import de.htwg.se.scrabble.controller.controllerComponent.{ButtonSet, CardsChanged, GameFieldChanged, GridSizeChanged, InvalidEquation}
 
 import scala.swing.Reactor
+import scala.swing.event.ButtonClicked
 
 /**
  * This controller creates an `Action` to handle HTTP requests to the
@@ -104,7 +102,7 @@ class HomeController @Inject()(cc: ControllerComponents)(implicit system: ActorS
     }
 
     reactions += {
-      case event: GameFieldChanged => sendJsonToClient(event)
+      case event: ButtonSet => sendJsonToClient(event)
       case event: CardsChanged => sendJsonToClient(event)
       case event: InvalidEquation => sendJsonToClient(event)
     }

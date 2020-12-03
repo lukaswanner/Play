@@ -1,5 +1,3 @@
-let curr_player = "A"
-
 const point = {
     "=": 1,
     "+": 1,
@@ -292,7 +290,6 @@ function loadRedoGrid() {
 }
 
 function loadHand() {
-    console.log(curr_player)
     $.ajax({
         method: "GET",
         url: "/json",
@@ -302,7 +299,7 @@ function loadHand() {
             console.log(result)
             let curr_hand
             let hand_size
-            if (curr_player === "A") {
+            if (result.status === "pA" || result.status === "fc") {
                 curr_hand = result.gameField.playerList.A.hand
                 hand_size = Object.keys(result.gameField.playerList.A.hand).length
             } else {
@@ -348,14 +345,12 @@ function loadPoints() {
             $("#scoreB .playerpoint")[0].innerHTML = result.gameField.playerList.B.point
             $("#ncards").html("cards in stack: " + result.gameField.pile.tilepile.length)
             if (result.status !== "fc") {
-                if (curr_player === "A") {
+                if (result.status === "pA" || result.status === "fc") {
                     $("#scoreA").removeClass("active")
                     $("#scoreB").addClass("active")
-                    curr_player = "B"
                 } else {
                     $("#scoreB").removeClass("active")
                     $("#scoreA").addClass("active")
-                    curr_player = "A"
                 }
             } else {
                 console.log("fc status was active")
@@ -371,32 +366,39 @@ function initBtns() {
             url: "/scrabble/new",
 
             success: function () {
-                curr_player = "A"
                 loadJsonNewGrid()
             }
         });
     })
 
     $("#switch_cards").click(function () {
-        if (curr_player === "A") {
-            $.ajax({
-                method: "GET",
-                url: "/scrabble/switch/A",
+        $.ajax({
+            method: "GET",
+            url: "/json",
+            dataType: "json",
 
-                success: function () {
-                    loadHand()
-                }
-            });
-        } else {
-            $.ajax({
-                method: "GET",
-                url: "/scrabble/switch/B",
+            success: function (result) {
+                if (result.status === "pA" || result.status === "fc") {
+                    $.ajax({
+                        method: "GET",
+                        url: "/scrabble/switch/A",
 
-                success: function () {
-                    loadHand()
+                        success: function () {
+                            loadHand()
+                        }
+                    });
+                } else {
+                    $.ajax({
+                        method: "GET",
+                        url: "/scrabble/switch/B",
+
+                        success: function () {
+                            loadHand()
+                        }
+                    });
                 }
-            });
-        }
+            }
+        })
     })
 
     $("#undo").click(function () {
@@ -470,14 +472,21 @@ function connectWebSocket() {
             console.log(res)
             if (res.Event === "CardsChanged()") {
                 console.log("CARDS CHANGED")
-                //loadHand()
-            } else {
+                loadHand()
+            } else if (res.Event === "InvalidEquation()" || res.Event === "ButtonSet()") {
+                alert("Equation is not valid!")
                 let grid_size = Object.keys(res.gameField.grid.cells).length
                 let grid = new Grid(grid_size)
                 grid.fill(res.gameField.grid.cells)
                 updateGrid(grid)
                 loadHand()
-                loadPoints()
+            } else if (res.Event === "GameFieldChanged()") {
+                console.log("FIELD CHANGED")
+                let grid_size = Object.keys(res.gameField.grid.cells).length
+                let grid = new Grid(grid_size)
+                grid.fill(res.gameField.grid.cells)
+                updateGrid(grid)
+                loadHand()
             }
         }
     };
