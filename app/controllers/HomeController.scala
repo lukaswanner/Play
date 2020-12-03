@@ -8,6 +8,7 @@ import play.api.libs.streams.ActorFlow
 import akka.actor.ActorSystem
 import akka.stream.Materializer
 import akka.actor._
+import akka.io.Tcp.Event
 import de.htwg.se.scrabble.controller.controllerComponent.GridSizeChanged
 import de.htwg.se.scrabble.controller.controllerComponent.InvalidEquation
 import de.htwg.se.scrabble.controller.controllerComponent.GameFieldChanged
@@ -103,14 +104,14 @@ class HomeController @Inject()(cc: ControllerComponents)(implicit system: ActorS
     }
 
     reactions += {
-      case event: GameFieldChanged => sendJsonToClient
-      case event: CardsChanged => sendJsonToClient
-      case event: InvalidEquation => sendJsonToClient
+      case event: GameFieldChanged => sendJsonToClient(event)
+      case event: CardsChanged => sendJsonToClient(event)
+      case event: InvalidEquation => sendJsonToClient(event)
     }
 
-    def sendJsonToClient = {
+    def sendJsonToClient(event: scala.swing.event.Event) = {
       println("Received event from Controller")
-      out ! (gamecontroller.memToJson(gamecontroller.createMemento()).toString())
+      out ! (gamecontroller.memToJson(gamecontroller.createMemento(),event).toString())
     }
   }
 

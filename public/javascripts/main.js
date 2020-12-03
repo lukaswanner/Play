@@ -1,4 +1,3 @@
-
 let curr_player = "A"
 
 const point = {
@@ -26,7 +25,7 @@ $("div.inHand").click(function (ev) {
 
 $(".myCell").not(".myLabel").click(function (ev) {
     if (!ev.currentTarget.classList.contains("activeDiv")) {
-        return recolor(ev.currentTarget,  $(".myCell"))
+        return recolor(ev.currentTarget, $(".myCell"))
     } else {
         return setCard()
     }
@@ -125,8 +124,16 @@ function updateGrid(grid) {
         let cell_value = grid.cells[i]
         for (let j = 0; j < grid.size; j++) {
             let value = cell_value[j]
-            if (data[j + 1].classList.contains("activeDiv") && value !== "") {
-                data[j + 1].innerHTML = ""
+            if (value !== "") {
+                if (data[j + 1].classList.contains("double")) {
+                    data[j + 1].innerHTML = ""
+                    data[j + 1].classList.add("double")
+                } else if (data[j + 1].classList.contains("triple")) {
+                    data[j + 1].innerHTML = ""
+                    data[j + 1].classList.add("triple")
+                } else {
+                    data[j + 1].innerHTML = ""
+                }
                 let character = document.createElement("div")
                 character.className = "myCharacter"
                 character.innerHTML = value
@@ -443,7 +450,7 @@ function connectWebSocket() {
     var websocket = new WebSocket("ws://localhost:9000/websocket");
     websocket.setTimeout = 1000
 
-    websocket.onopen = function(event) {
+    websocket.onopen = function (event) {
         console.log("Connected to Websocket");
     }
 
@@ -458,19 +465,22 @@ function connectWebSocket() {
 
     websocket.onmessage = function (e) {
         if (typeof e.data === "string") {
-            console.log("websockets geht")
             let res = JSON.parse(e.data)
             console.log(res)
-            let grid_size = Object.keys(res.gameField.grid.cells).length
-            let grid = new Grid(grid_size)
-            console.log(grid.cells)
-            grid.fill(res.gameField.grid.cells)
-            updateGrid(grid)
-            loadHand()
+            if (res.Event === "CardsChanged()"){
+                console.log("CARDS CHANGED")
+                //loadHand()
+            }else {
+                let grid_size = Object.keys(res.gameField.grid.cells).length
+                let grid = new Grid(grid_size)
+                grid.fill(res.gameField.grid.cells)
+                updateGrid(grid)
+                loadHand()
+                loadPoints()
+            }
         }
     };
 }
-
 
 
 $(document).ready(function () {
