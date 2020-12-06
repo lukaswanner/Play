@@ -441,7 +441,7 @@ function initBtns() {
 }
 
 function connectWebSocket() {
-    var websocket = new WebSocket("ws://localhost:9000/websocket");
+    let websocket = new WebSocket("ws://localhost:9000/websocket");
     websocket.setTimeout
 
     websocket.onopen = function () {
@@ -451,6 +451,7 @@ function connectWebSocket() {
     websocket.onclose = function (code) {
         console.log(code)
         console.log('Connection with Websocket Closed!');
+        connectWebSocket()
     };
 
     websocket.onerror = function (error) {
@@ -462,17 +463,17 @@ function connectWebSocket() {
             let res = JSON.parse(e.data)
             console.log(res)
             if (res.Event === "CardsChanged()") {
-                console.log("CARDS CHANGED")
                 loadHand()
+                console.log($(".myRow").get(0).children)
             } else if (res.Event === "InvalidEquation()") {
                 alert("Equation is not valid!")
                 let grid_size = Object.keys(res.gameField.grid.cells).length
                 let grid = new Grid(grid_size)
                 grid.fill(res.gameField.grid.cells)
+                newGrid(grid)
                 updateGrid(grid)
                 loadHand()
             } else if (res.Event === "GameFieldChanged()") {
-                console.log("FIELD CHANGED")
                 let grid_size = Object.keys(res.gameField.grid.cells).length
                 let grid = new Grid(grid_size)
                 grid.fill(res.gameField.grid.cells)
@@ -480,7 +481,21 @@ function connectWebSocket() {
                 if (res.status === "fc") {
                     newGrid(grid)
                 } else {
-
+                    newGrid(grid)
+                    updateGrid(grid)
+                }
+                loadHand()
+                loadPoints()
+            }else if (res.Event === "GridSizeChanged()") {
+                let grid_size = Object.keys(res.gameField.grid.cells).length
+                let grid = new Grid(grid_size)
+                grid.fill(res.gameField.grid.cells)
+                console.log(res.status)
+                if (res.status === "fc") {
+                    newGrid(grid)
+                } else {
+                    newGrid(grid)
+                    //hier neues grid
                     updateGrid(grid)
                 }
                 loadHand()

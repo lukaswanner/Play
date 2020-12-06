@@ -105,6 +105,7 @@ class HomeController @Inject()(cc: ControllerComponents)(implicit system: ActorS
       case event: GameFieldChanged => sendJsonToClient(event)
       case event: CardsChanged => sendJsonToClient(event)
       case event: InvalidEquation => sendJsonToClient(event)
+      case event: GridSizeChanged => sendJsonToClient(event)
     }
 
     def sendJsonToClient(event: scala.swing.event.Event) = {
