@@ -86,12 +86,19 @@ function showbutton() {
 }
 
 function resize(size) {
-    document.location.replace("/scrabble/resize/" + size)
+    let url = "/scrabble/resize/" + size
 
-    let buttons = document.getElementsByClassName("possibleSize")
-    for (let i = 0; i < buttons.length; i++) {
-        buttons[i].classList.add("d-none")
-    }
+    $.ajax({
+        method: "GET",
+        url: url,
+
+        success: function () {
+            let buttons = document.getElementsByClassName("possibleSize")
+            for (let i = 0; i < buttons.length; i++) {
+                buttons[i].classList.add("d-none")
+            }
+        }
+    })
 }
 
 class Grid {
@@ -99,16 +106,21 @@ class Grid {
     constructor(size) {
         this.size = size
         this.cells = []
+        this.cellKind = []
     }
 
     fill(json) {
         let data = []
+        let cellKinds = []
         for (let j = 0; j < this.size; j++) {
             for (let i = 0; i < this.size; i++) {
                 data[i] = json[i][j].value
+                cellKinds[i] = json[i][j].kind
             }
+            this.cellKind[j] = cellKinds
             this.cells[j] = data
             data = []
+            cellKinds = []
         }
     }
 
@@ -148,9 +160,51 @@ function updateGrid(grid) {
             }
         }
     }
-
-
 }
+
+function gridSizeUpdate(grid) {
+    let rows = $(".myRow")
+    for (let i = 0; i < rows.length; i++) {
+        let data = rows.get(i)
+        rows.get(i).innerHTML = ""
+        if (i < grid.size + 1) {
+            for (let j = 0; j < grid.size + 1; j++) {
+                if (i === 0) {
+                    let cell = document.createElement("div")
+                    cell.className = "myCell"
+                    cell.classList.add("myLabel")
+                    if (j !== 0) {
+                        cell.innerHTML = j
+                    }
+                    data.appendChild(cell)
+                } else {
+                    let cell = document.createElement("div")
+                    cell.className = "myCell"
+                    if (j === 0) {
+                        cell.classList.add("myLabel")
+                        cell.innerHTML = i
+                    } else {
+                        if (grid.cellKind[i - 1][j - 1] === "t") {
+                            cell.classList.add("triple")
+                            cell.innerHTML = "x3"
+                        } else if (grid.cellKind[i - 1][j - 1] === "d") {
+                            cell.classList.add("double")
+                            cell.innerHTML = "x2"
+                        }
+                    }
+                    data.appendChild(cell)
+                }
+            }
+        }
+    }$(".myCell").not(".myLabel").click(function (ev) {
+        if (!ev.currentTarget.classList.contains("activeDiv")) {
+            return recolor(ev.currentTarget, $(".myCell"))
+        } else {
+            return setCard()
+        }
+    })
+}
+
 
 function newGrid(grid) {
     let rows = $(".myRow")
@@ -292,6 +346,7 @@ function loadHand() {
         dataType: "json",
 
         success: function (result) {
+            console.log(result)
             let curr_hand
             let hand_size
             if (result.status === "pA" || result.status === "fc") {
@@ -331,23 +386,23 @@ function loadHand() {
 
 function loadPoints() {
     $.ajax({
-            method: "GET",
-            url: "/json",
-            dataType: "json",
+        method: "GET",
+        url: "/json",
+        dataType: "json",
 
-            success: function (result) {
-                $("#scoreA .playerpoint")[0].innerHTML = result.gameField.playerList.A.point
-                $("#scoreB .playerpoint")[0].innerHTML = result.gameField.playerList.B.point
-                $("#ncards").html("cards in stack: " + result.gameField.pile.tilepile.length)
-                if (result.status === "pB") {
-                    $("#scoreA").removeClass("active")
-                    $("#scoreB").addClass("active")
-                } else {
-                    $("#scoreB").removeClass("active")
-                    $("#scoreA").addClass("active")
-                }
+        success: function (result) {
+            $("#scoreA .playerpoint")[0].innerHTML = result.gameField.playerList.A.point
+            $("#scoreB .playerpoint")[0].innerHTML = result.gameField.playerList.B.point
+            $("#ncards").html("cards in stack: " + result.gameField.pile.tilepile.length)
+            if (result.status === "pB") {
+                $("#scoreA").removeClass("active")
+                $("#scoreB").addClass("active")
+            } else {
+                $("#scoreB").removeClass("active")
+                $("#scoreA").addClass("active")
             }
-        })
+        }
+    })
 }
 
 function initBtns() {
@@ -464,7 +519,6 @@ function connectWebSocket() {
             console.log(res)
             if (res.Event === "CardsChanged()") {
                 loadHand()
-                console.log($(".myRow").get(0).children)
             } else if (res.Event === "InvalidEquation()") {
                 alert("Equation is not valid!")
                 let grid_size = Object.keys(res.gameField.grid.cells).length
@@ -477,6 +531,7 @@ function connectWebSocket() {
                 let grid_size = Object.keys(res.gameField.grid.cells).length
                 let grid = new Grid(grid_size)
                 grid.fill(res.gameField.grid.cells)
+                console.log(res.gameField.grid.cells)
                 console.log(res.status)
                 if (res.status === "fc") {
                     newGrid(grid)
@@ -486,17 +541,19 @@ function connectWebSocket() {
                 }
                 loadHand()
                 loadPoints()
-            }else if (res.Event === "GridSizeChanged()") {
+            } else if (res.Event === "GridSizeChanged()") {
                 let grid_size = Object.keys(res.gameField.grid.cells).length
                 let grid = new Grid(grid_size)
                 grid.fill(res.gameField.grid.cells)
                 console.log(res.status)
                 if (res.status === "fc") {
+                    gridSizeUpdate(grid)
                     newGrid(grid)
+                    loadHand()
                 } else {
+                    gridSizeUpdate(grid)
                     newGrid(grid)
-                    //hier neues grid
-                    updateGrid(grid)
+                    loadHand()
                 }
                 loadHand()
                 loadPoints()
@@ -511,4 +568,3 @@ $(document).ready(function () {
     initBtns()
     connectWebSocket()
 });
-
