@@ -1,37 +1,19 @@
 let currHand = [{text: "None", Points: "0"}]
+let currPlayer = "A"
 for (let index = 1; index < 9; index++) {
     currHand.push({text: index, Points: "Points: " + index})
 }
 
-let test = Vue({
-    el: "#test",
+var app = new Vue({
+    el: "#app",
     data: {
-
+        message: currPlayer
     }
 })
 
-Vue.component('myHand', {
-    template: `
-        <div class="myHand">
-            <div v-for="card in hand" class="inHand">
-                {{card.text}}
-                {{card.Points}}
-            </div>  
-        </div>
-    `,
-    data: function () {
-        return {
-            hand: currHand
-        }
-    },
-
-})
-
-Vue.component('button-counter', {
-    data: function () {
-        return {
-            count: 0
-        }
-    },
-    template: '<button v-on:click="count++">You clicked me {{ count }} times.</button>'
+var card = new Vue({
+    el: "#card",
+    data: {
+        list: [1,2,3,4,5,6]
+    }
 })
