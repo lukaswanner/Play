@@ -3,6 +3,12 @@ for (let index = 1; index < 9; index++) {
     currHand.push({text: index, Points: "Points: " + index})
 }
 
+let test = Vue({
+    el: "#test",
+    data: {
+
+    }
+})
 
 Vue.component('myHand', {
     template: `
