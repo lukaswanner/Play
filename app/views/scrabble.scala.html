@@ -29,37 +29,37 @@
             <div class="row">
                 <div class="col gamecontainer">
                     <div class="myGrid">
-                        <div class="myRow">
-                            <div class="myCell myLabel"> </div>
-                            @for(i <- 1 until size + 1) {
-                                <div class="myCell myLabel">@i</div>
-                            }
-                        </div>
-                        @for(col <- 0 until size) {
-                            <div class="myRow">
-                                <div class="myCell myLabel">@(col + 1)</div>
-                                @for(row <- 0 until size) {
-                                    @if(grid.cell(row, col).isSet) {
-                                        @card(grid.cell(row, col).card, addedClass = "myCell")
-                                    } else {
-                                        @if(grid.cell(row, col).isNormal) {
-                                            <div class="myCell normal">@grid.cell(row, col)</div>
-                                        } else {
-                                            @if(grid.cell(row, col).isDouble) {
-                                                <div class="myCell double">@grid.cell(row, col)</div>
-                                            } else {
-                                                <div class="myCell triple">@grid.cell(row, col)</div>
-                                            }
-                                        }
-                                    }
-                                }
-                            </div>
-                        }
+@*                        <div class="myRow">*@
+@*                            <div class="myCell myLabel"> </div>*@
+@*                            @for(i <- 1 until size + 1) {*@
+@*                                <div class="myCell myLabel">@i</div>*@
+@*                            }*@
+@*                        </div>*@
+@*                        @for(col <- 0 until size) {*@
+@*                            <div class="myRow">*@
+@*                                <div class="myCell myLabel">@(col + 1)</div>*@
+@*                                @for(row <- 0 until size) {*@
+@*                                    @if(grid.cell(row, col).isSet) {*@
+@*                                        @card(grid.cell(row, col).card, addedClass = "myCell")*@
+@*                                    } else {*@
+@*                                        @if(grid.cell(row, col).isNormal) {*@
+@*                                            <div class="myCell normal">@grid.cell(row, col)</div>*@
+@*                                        } else {*@
+@*                                            @if(grid.cell(row, col).isDouble) {*@
+@*                                                <div class="myCell double">@grid.cell(row, col)</div>*@
+@*                                            } else {*@
+@*                                                <div class="myCell triple">@grid.cell(row, col)</div>*@
+@*                                            }*@
+@*                                        }*@
+@*                                    }*@
+@*                                }*@
+@*                            </div>*@
+@*                        }*@
                     </div>
                     <div class="myHand">
-                    @for(c <- hand) {
-                        @card(c, addedClass = "inHand")
-                    }
+@*                    @for(c <- hand) { *@
+@*                        @card(c, addedClass = "inHand") *@
+@*                    } *@
                     </div>
                 </div>
                 <div class="col control">
@@ -94,6 +94,9 @@
                                         submit</button>
                                     <button type="button" class="btn btn-dark btn-block mb-3" id="resize">
                                         resize</button>
+                                    <div id="test">
+                                        <button v-on:click="submit">{{message}}</button>
+                                    </div>
                                     <div class="col sizes">
                                         <button type="button" class="btn btn-dark btn-block possibleSize d-none" id="3x3">
                                             3x3</button>
