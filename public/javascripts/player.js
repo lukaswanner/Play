@@ -27,7 +27,6 @@ let player = new Vue({
 $("#SetPlayerA").click(function () {
    current_player = "A"
     player.updatePlayer()
-    console.log("DOING STUFF CHEF")
     loadHand()
 })
 
@@ -35,7 +34,6 @@ $("#SetPlayerA").click(function () {
 $("#SetPlayerB").click(function () {
     current_player = "B"
     player.updatePlayer()
-    console.log("DOING STUFF CHEF")
     loadHand()
 })
 
