@@ -79,6 +79,9 @@
                         </div>
                     </div>
                     <p id="ncards">cards in stack: @pile.size</p>
+
+                    <div id="current_player"> {{message}} </div>
+
                     <div class="container">
                         <div class="row">
                             <div class="col">
@@ -90,7 +93,7 @@
                                     undo</button>
                                 <button type="button" class="btn btn-dark btn-block" id="redo">
                                     redo</button>
-                                <button type="button" class="btn btn-dark btn-block" id="submit" id="submit">
+                                <button type="button" class="btn btn-dark btn-block" id="submit">
                                     submit</button>
                                 <button type="button" class="btn btn-dark btn-block mb-3" id="resize">
                                     resize</button>
@@ -99,9 +102,15 @@
                                         3x3</button>
                                     <button type="button" class="btn btn-dark btn-block possibleSize d-none" id="9x9">
                                         9x9</button>
-                                    <button type="button" class="btn btn-dark btn-block possibleSize d-none" id="15x15">
+                                    <button type="button" class="btn btn-dark btn-block possibleSize d-none mb-3" id="15x15">
                                         15x15</button>
                                 </div>
+
+                                <button type="button" class="btn btn-dark btn-block" id="SetPlayerA">
+                                    Player A</button>
+                                <button type="button" class="btn btn-dark btn-block" id="SetPlayerB">
+                                    Player B</button>
+
                             </div>
                         </div>
                     </div>

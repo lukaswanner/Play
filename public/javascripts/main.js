@@ -35,6 +35,25 @@ function recolor(element, arr) {
 }
 
 function setCard() {
+    $.ajax({
+        method: "GET",
+        url: "/json",
+        dataType: "json",
+        success: function (result) {
+            let jsonPlayer = result.status
+            console.log(current_player)
+            console.log(jsonPlayer)
+            if (current_player === "A" && (jsonPlayer === "pA" || jsonPlayer === "fc")) {
+                setCardcurrPlayer()
+            } else if (current_player === "B" && jsonPlayer === "pB") {
+                setCardcurrPlayer()
+            }
+        }
+    });
+
+}
+
+function setCardcurrPlayer() {
     let active = isActive($(".inHand"))
     if (active[0]) {
         for (let i = 0; i < $(".myRow").length; i++) {
@@ -57,7 +76,6 @@ function setCard() {
     } else {
         alert("No card was selected")
     }
-
 }
 
 
@@ -135,15 +153,7 @@ function updateGrid(grid) {
         for (let j = 0; j < grid.size; j++) {
             let value = cell_value[j]
             if (value !== "") {
-                if (data[j + 1].classList.contains("double")) {
-                    data[j + 1].innerHTML = ""
-                    data[j + 1].classList.add("double")
-                } else if (data[j + 1].classList.contains("triple")) {
-                    data[j + 1].innerHTML = ""
-                    data[j + 1].classList.add("triple")
-                } else {
-                    data[j + 1].innerHTML = ""
-                }
+                data[j + 1].innerHTML = ""
                 let character = document.createElement("div")
                 character.className = "myCharacter"
                 character.innerHTML = value
@@ -162,7 +172,7 @@ function updateGrid(grid) {
     }
 }
 
-function gridSizeUpdate(grid) {
+function newGrid(grid) {
     let rows = $(".myRow")
     for (let i = 0; i < rows.length; i++) {
         let data = rows.get(i)
@@ -196,7 +206,8 @@ function gridSizeUpdate(grid) {
                 }
             }
         }
-    }$(".myCell").not(".myLabel").click(function (ev) {
+    }
+    $(".myCell").not(".myLabel").click(function (ev) {
         if (!ev.currentTarget.classList.contains("activeDiv")) {
             return recolor(ev.currentTarget, $(".myCell"))
         } else {
@@ -205,26 +216,6 @@ function gridSizeUpdate(grid) {
     })
 }
 
-
-function newGrid(grid) {
-    let rows = $(".myRow")
-    for (let i = 0; i < grid.size; i++) {
-        let data = rows.get(i + 1).children
-        for (let j = 0; j < grid.size; j++) {
-            if (data[j + 1].classList.contains("set")) {
-                data[j + 1].classList.remove("myCard")
-                data[j + 1].classList.remove("set")
-                if (data[j + 1].classList.contains("triple")) {
-                    data[j + 1].innerHTML = "x3"
-                } else if (data[j + 1].classList.contains("double")) {
-                    data[j + 1].innerHTML = "x2"
-                } else {
-                    data[j + 1].innerHTML = ""
-                }
-            }
-        }
-    }
-}
 
 function undoGrid(grid) {
     let rows = $(".myRow")
@@ -346,42 +337,48 @@ function loadHand() {
         dataType: "json",
 
         success: function (result) {
-            console.log(result)
-            let curr_hand
-            let hand_size
-            if (result.status === "pA" || result.status === "fc") {
-                curr_hand = result.gameField.playerList.A.hand
-                hand_size = Object.keys(result.gameField.playerList.A.hand).length
-            } else {
-                curr_hand = result.gameField.playerList.B.hand
-                hand_size = Object.keys(result.gameField.playerList.B.hand).length
+            let jsonPlayer = result.status
+            if (current_player === "A") {
+                updateHand(current_player, result)
+            } else if (current_player === "B") {
+                updateHand(current_player, result)
             }
-            $(".myHand").empty()
-            for (let i = 0; i < hand_size; i++) {
-                let card = document.createElement("div")
-                card.className = "myCard"
-                card.classList.add("inHand")
-                $(".myHand").append(card)
-            }
-            let hand = $(".myCard.inHand")
-            for (let i = 0; i < hand_size; i++) {
-                hand.get(i).innerHTML = ""
-                let character = document.createElement("div")
-                character.className = "myCharacter"
-                character.innerHTML = curr_hand[i].value
-                let points = document.createElement("div")
-                points.className = "myPoint"
-                points.innerHTML = point[curr_hand[i].value]
-                hand.get(i).appendChild(character)
-                hand.get(i).appendChild(points)
-            }
-            $("div.inHand").click(function (ev) {
-                return recolor(ev.currentTarget, $(".inHand"))
-            })
         }
     });
+}
 
-
+function updateHand(Player, result) {
+    let curr_hand
+    let hand_size
+    if (Player === "A") {
+        curr_hand = result.gameField.playerList.A.hand
+        hand_size = Object.keys(result.gameField.playerList.A.hand).length
+    } else {
+        curr_hand = result.gameField.playerList.B.hand
+        hand_size = Object.keys(result.gameField.playerList.B.hand).length
+    }
+    $(".myHand").empty()
+    for (let i = 0; i < hand_size; i++) {
+        let card = document.createElement("div")
+        card.className = "myCard"
+        card.classList.add("inHand")
+        $(".myHand").append(card)
+    }
+    let hand = $(".myCard.inHand")
+    for (let i = 0; i < hand_size; i++) {
+        hand.get(i).innerHTML = ""
+        let character = document.createElement("div")
+        character.className = "myCharacter"
+        character.innerHTML = curr_hand[i].value
+        let points = document.createElement("div")
+        points.className = "myPoint"
+        points.innerHTML = point[curr_hand[i].value]
+        hand.get(i).appendChild(character)
+        hand.get(i).appendChild(points)
+    }
+    $("div.inHand").click(function (ev) {
+        return recolor(ev.currentTarget, $(".inHand"))
+    })
 }
 
 function loadPoints() {
@@ -424,7 +421,7 @@ function initBtns() {
             dataType: "json",
 
             success: function (result) {
-                if (result.status === "pA" || result.status === "fc") {
+                if (current_player === "A") {
                     $.ajax({
                         method: "GET",
                         url: "/scrabble/switch/A",
@@ -531,8 +528,6 @@ function connectWebSocket() {
                 let grid_size = Object.keys(res.gameField.grid.cells).length
                 let grid = new Grid(grid_size)
                 grid.fill(res.gameField.grid.cells)
-                console.log(res.gameField.grid.cells)
-                console.log(res.status)
                 if (res.status === "fc") {
                     newGrid(grid)
                 } else {
@@ -545,13 +540,10 @@ function connectWebSocket() {
                 let grid_size = Object.keys(res.gameField.grid.cells).length
                 let grid = new Grid(grid_size)
                 grid.fill(res.gameField.grid.cells)
-                console.log(res.status)
                 if (res.status === "fc") {
-                    gridSizeUpdate(grid)
                     newGrid(grid)
                     loadHand()
                 } else {
-                    gridSizeUpdate(grid)
                     newGrid(grid)
                     loadHand()
                 }
