@@ -34,7 +34,7 @@ function recolor(element, arr) {
     element.classList.add("activeDiv")
 }
 
-function setCard() {
+function setCard(grid) {
     $.ajax({
         method: "GET",
         url: "/json",
@@ -44,16 +44,16 @@ function setCard() {
             console.log(current_player)
             console.log(jsonPlayer)
             if (current_player === "A" && (jsonPlayer === "pA" || jsonPlayer === "fc")) {
-                setCardcurrPlayer()
+                setCardcurrPlayer(grid)
             } else if (current_player === "B" && jsonPlayer === "pB") {
-                setCardcurrPlayer()
+                setCardcurrPlayer(grid)
             }
         }
     });
 
 }
 
-function setCardcurrPlayer() {
+function setCardcurrPlayer(grid) {
     let active = isActive($(".inHand"))
     if (active[0]) {
         for (let i = 0; i < $(".myRow").length; i++) {
