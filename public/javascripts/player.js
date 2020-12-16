@@ -1,17 +1,5 @@
 let current_player = "A"
 
-
-// function loadJson() {
-//     $.ajax({
-//         method: "GET",
-//         url: "/json",
-//         dataType: "json",
-//
-//         success: function (result) {
-//         }
-//     });
-// }
-
 let player = new Vue({
     el: "#current_player",
     data: {

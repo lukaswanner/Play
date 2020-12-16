@@ -141,8 +141,6 @@ class Grid {
             cellKinds = []
         }
     }
-
-
 }
 
 function updateGrid(grid) {
@@ -337,7 +335,6 @@ function loadHand() {
         dataType: "json",
 
         success: function (result) {
-            let jsonPlayer = result.status
             if (current_player === "A") {
                 updateHand(current_player, result)
             } else if (current_player === "B") {
