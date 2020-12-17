@@ -1,5 +1,5 @@
 import My_grid from "./module.js"
-
+import current_player from "./player.js";
 
 //todo add struct grid instead of class grid
 
@@ -21,26 +21,27 @@ function recolor(element, arr) {
     element.classList.add("activeDiv")
 }
 
-function setCard(grid) {
+function setCard() {
     $.ajax({
         method: "GET",
         url: "/json",
         dataType: "json",
         success: function (result) {
             let jsonPlayer = result.status
+            console.log("im here ")
             console.log(current_player)
             console.log(jsonPlayer)
             if (current_player === "A" && (jsonPlayer === "pA" || jsonPlayer === "fc")) {
-                setCardcurrPlayer(grid)
+                setCardcurrPlayer()
             } else if (current_player === "B" && jsonPlayer === "pB") {
-                setCardcurrPlayer(grid)
+                setCardcurrPlayer()
             }
         }
     });
 
 }
 
-function setCardcurrPlayer(grid) {
+function setCardcurrPlayer() {
     let active = isActive($(".inHand"))
     if (active[0]) {
         for (let i = 0; i < $(".myRow").length; i++) {
@@ -106,30 +107,6 @@ function resize(size) {
     })
 }
 
-//wird durch struct ersetzt
-// class Grid {
-//
-//     constructor(size) {
-//         this.size = size
-//         this.cells = []
-//         this.cellKind = []
-//     }
-//
-//     fill(json) {
-//         let data = []
-//         let cellKinds = []
-//         for (let j = 0; j < this.size; j++) {
-//             for (let i = 0; i < this.size; i++) {
-//                 data[i] = json[i][j].value
-//                 cellKinds[i] = json[i][j].kind
-//             }
-//             this.cellKind[j] = cellKinds
-//             this.cells[j] = data
-//             data = []
-//             cellKinds = []
-//         }
-//     }
-// }
 
 function updateGrid(grid) {
     let rows = $(".myRow")
@@ -145,7 +122,7 @@ function updateGrid(grid) {
                 character.innerHTML = value
                 let points = document.createElement("div")
                 points.className = "myPoint"
-                points.innerHTML = point[value]
+                points.innerHTML = grid.points[value]
                 data[j + 1].classList.add("myCard")
                 data[j + 1].classList.add("set")
                 $(".undo").removeClass("undo")
@@ -180,10 +157,10 @@ function newGrid(grid) {
                         cell.classList.add("myLabel")
                         cell.innerHTML = i
                     } else {
-                        if (grid.cellKind[i - 1][j - 1] === "t") {
+                        if (grid.kind[i - 1][j - 1] === "t") {
                             cell.classList.add("triple")
                             cell.innerHTML = "x3"
-                        } else if (grid.cellKind[i - 1][j - 1] === "d") {
+                        } else if (grid.kind[i - 1][j - 1] === "d") {
                             cell.classList.add("double")
                             cell.innerHTML = "x2"
                         }
@@ -238,7 +215,7 @@ function redoGrid(grid) {
                 character.innerHTML = value
                 let points = document.createElement("div")
                 points.className = "myPoint"
-                points.innerHTML = point[value]
+                points.innerHTML = grid.points[value]
                 data[j + 1].classList.add("myCard")
                 data[j + 1].classList.add("set")
                 $(".undo").removeClass("undo")
@@ -260,9 +237,9 @@ function loadJson() {
 
         success: function (result) {
             let grid_size = Object.keys(result.gameField.grid.cells).length
-            My_grid.fill(result.gameField.grid.cells,grid_size)
+            My_grid.fill(result.gameField.grid.cells, grid_size)
             updateGrid(My_grid)
-            loadHand()
+            loadHand(My_grid)
         }
     });
 }
@@ -275,9 +252,9 @@ function loadJsonNewGrid() {
 
         success: function (result) {
             let grid_size = Object.keys(result.gameField.grid.cells).length
-            My_grid.fill(result.gameField.grid.cells,grid_size)
+            My_grid.fill(result.gameField.grid.cells, grid_size)
             newGrid(My_grid)
-            loadHand()
+            loadHand(My_grid)
         }
     });
 }
@@ -290,9 +267,9 @@ function loadUndoGrid() {
 
         success: function (result) {
             let grid_size = Object.keys(result.gameField.grid.cells).length
-            My_grid.fill(result.gameField.grid.cells,grid_size)
+            My_grid.fill(result.gameField.grid.cells, grid_size)
             undoGrid(My_grid)
-            loadHand()
+            loadHand(My_grid)
         }
     });
 }
@@ -305,14 +282,14 @@ function loadRedoGrid() {
 
         success: function (result) {
             let grid_size = Object.keys(result.gameField.grid.cells).length
-            My_grid.fill(result.gameField.grid.cells,grid_size)
+            My_grid.fill(result.gameField.grid.cells, grid_size)
             redoGrid(My_grid)
-            loadHand()
+            loadHand(My_grid)
         }
     });
 }
 
-function loadHand() {
+function loadHand(grid) {
     $.ajax({
         method: "GET",
         url: "/json",
@@ -320,15 +297,15 @@ function loadHand() {
 
         success: function (result) {
             if (current_player === "A") {
-                updateHand(current_player, result)
+                updateHand(current_player, result, grid)
             } else if (current_player === "B") {
-                updateHand(current_player, result)
+                updateHand(current_player, result, grid)
             }
         }
     });
 }
 
-function updateHand(Player, result) {
+function updateHand(Player, result, grid) {
     let curr_hand
     let hand_size
     if (Player === "A") {
@@ -353,7 +330,7 @@ function updateHand(Player, result) {
         character.innerHTML = curr_hand[i].value
         let points = document.createElement("div")
         points.className = "myPoint"
-        points.innerHTML = point[curr_hand[i].value]
+        points.innerHTML = grid.points[curr_hand[i].value]
         hand.get(i).appendChild(character)
         hand.get(i).appendChild(points)
     }
@@ -402,13 +379,15 @@ function initBtns() {
             dataType: "json",
 
             success: function (result) {
+                let grid_size = Object.keys(result.gameField.grid.cells).length
+                My_grid.fill(result.gameField.grid.cells, grid_size)
                 if (current_player === "A") {
                     $.ajax({
                         method: "GET",
                         url: "/scrabble/switch/A",
 
                         success: function () {
-                            loadHand()
+                            loadHand(My_grid)
                         }
                     });
                 } else {
@@ -417,7 +396,7 @@ function initBtns() {
                         url: "/scrabble/switch/B",
 
                         success: function () {
-                            loadHand()
+                            loadHand(My_grid)
                         }
                     });
                 }
@@ -449,13 +428,23 @@ function initBtns() {
     $("#submit").click(function () {
         $.ajax({
             method: "GET",
-            url: "/scrabble/submit",
+            url: "/json",
+            dataType: "json",
 
-            success: function () {
-                loadPoints()
-                loadHand()
+            success: function (result) {
+                let grid_size = Object.keys(result.gameField.grid.cells).length
+                My_grid.fill(result.gameField.grid.cells, grid_size)
+                $.ajax({
+                    method: "GET",
+                    url: "/scrabble/submit",
+
+                    success: function () {
+                        loadPoints()
+                        loadHand(My_grid)
+                    }
+                });
             }
-        });
+        })
     })
 
     $("#resize").click(showbutton)
@@ -493,39 +482,35 @@ function connectWebSocket() {
 
     websocket.onmessage = function (e) {
         if (typeof e.data === "string") {
-            let res = JSON.parse(e.data)
-            console.log(res)
-            if (res.Event === "CardsChanged()") {
-                loadHand()
-            } else if (res.Event === "InvalidEquation()") {
+            let result = JSON.parse(e.data)
+            console.log(result)
+            let grid_size = Object.keys(result.gameField.grid.cells).length
+            My_grid.fill(result.gameField.grid.cells, grid_size)
+            if (result.Event === "CardsChanged()") {
+                loadHand(My_grid)
+            } else if (result.Event === "InvalidEquation()") {
                 alert("Equation is not valid!")
-                let grid_size = Object.keys(result.gameField.grid.cells).length
-                My_grid.fill(result.gameField.grid.cells,grid_size)
                 newGrid(My_grid)
                 updateGrid(My_grid)
-                loadHand()
-            } else if (res.Event === "GameFieldChanged()") {
-                let grid_size = Object.keys(result.gameField.grid.cells).length
-                My_grid.fill(result.gameField.grid.cells,grid_size)
-                if (res.status === "fc") {
+                loadHand(My_grid)
+            } else if (result.Event === "GameFieldChanged()") {
+                if (result.status === "fc") {
                     newGrid(My_grid)
                 } else {
                     newGrid(My_grid)
                     updateGrid(My_grid)
                 }
-                loadHand()
+                loadHand(My_grid)
                 loadPoints()
-            } else if (res.Event === "GridSizeChanged()") {
-                let grid_size = Object.keys(result.gameField.grid.cells).length
-                My_grid.fill(result.gameField.grid.cells,grid_size)
-                if (res.status === "fc") {
+            } else if (result.Event === "GridSizeChanged()") {
+                if (result.status === "fc") {
                     newGrid(My_grid)
-                    loadHand()
+                    loadHand(My_grid)
                 } else {
                     newGrid(My_grid)
-                    loadHand()
+                    loadHand(My_grid)
                 }
-                loadHand()
+                loadHand(My_grid)
                 loadPoints()
             }
         }
@@ -538,3 +523,6 @@ $(document).ready(function () {
     initBtns()
     connectWebSocket()
 });
+
+
+export {recolor, setCard}

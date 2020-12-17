@@ -1,4 +1,5 @@
 import My_grid from "./module.js"
+import {recolor, setCard} from "./main.js"
 
 function inital_load() {
     $.ajax({

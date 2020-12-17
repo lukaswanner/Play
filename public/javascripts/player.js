@@ -6,22 +6,24 @@ let player = new Vue({
         message: current_player
     },
     methods:{
-        updatePlayer() {
-            this.message = current_player
+        updatePlayer(player) {
+            this.message = player
         }
     }
 })
 
 $("#SetPlayerA").click(function () {
    current_player = "A"
-    player.updatePlayer()
+    player.updatePlayer(current_player)
     loadHand()
 })
 
 
 $("#SetPlayerB").click(function () {
     current_player = "B"
-    player.updatePlayer()
+    player.updatePlayer(current_player)
     loadHand()
 })
 
+
+export default current_player
