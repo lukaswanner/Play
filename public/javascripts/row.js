@@ -1,3 +1,4 @@
+import My_grid from "./module.js"
 
 function inital_load() {
     $.ajax({
@@ -21,8 +22,8 @@ function load(grid,grid_size) {
                 mygrid: grid,
                 size: grid_size,
                 cells: grid.cells,
-                kind: grid.cellKind,
-                points: point,
+                kind: grid.kind,
+                points: grid.points,
             };
         },
         template: `<div> 

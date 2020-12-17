@@ -1,20 +1,5 @@
-const point = {
-    "=": 1,
-    "+": 1,
-    "-": 1,
-    "*": 2,
-    "/": 3,
-    "1": 1,
-    "2": 1,
-    "3": 2,
-    "4": 2,
-    "5": 3,
-    "6": 2,
-    "7": 4,
-    "8": 2,
-    "9": 2,
-    "0": 1
-}
+import My_grid from "./module.js"
+
 
 //todo add struct grid instead of class grid
 
