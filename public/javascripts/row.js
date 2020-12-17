@@ -1,6 +1,3 @@
-var v_grid = new Grid(15)
-let test_size = 15
-
 
 function inital_load() {
     $.ajax({
@@ -9,21 +6,23 @@ function inital_load() {
         dataType: "json",
 
         success: function (result) {
-            v_grid.fill(result.gameField.grid.cells)
-            load(v_grid)
+            let grid_size = Object.keys(result.gameField.grid.cells).length
+            My_grid.fill(result.gameField.grid.cells,grid_size)
+            load(My_grid,grid_size)
         }
     })
 }
 
-function load(grid) {
+function load(grid,grid_size) {
     console.log("im loading !!!")
     Vue.component('newapp-user', {
         data: function () {
             return {
                 mygrid: grid,
-                size: test_size,
+                size: grid_size,
                 cells: grid.cells,
                 kind: grid.cellKind,
+                points: point,
             };
         },
         template: `<div> 
@@ -40,7 +39,7 @@ function load(grid) {
                                 <div v-for="(m,index) in cells[i]" :key="m">
                                     <div v-if="m !== ''" class="myCell myCard"> 
                                         <div class="myCharacter"> {{m}} </div>
-                                        <div class="myPoint"> 1 </div>
+                                        <div class="myPoint"> {{points[m]}} </div>
                                     </div>
            
                                     <div v-else-if="kind[i][index] ==='n'" class="myCell normal" @click="addclick(mygrid,$event)"></div>
@@ -58,7 +57,6 @@ function load(grid) {
                 } else {
                     return setCard(grid)
                 }
-
             },
         }
 

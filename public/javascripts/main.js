@@ -16,6 +16,8 @@ const point = {
     "0": 1
 }
 
+//todo add struct grid instead of class grid
+
 $("div.inHand").click(function (ev) {
     return recolor(ev.currentTarget, $(".inHand"))
 })
@@ -119,29 +121,30 @@ function resize(size) {
     })
 }
 
-class Grid {
-
-    constructor(size) {
-        this.size = size
-        this.cells = []
-        this.cellKind = []
-    }
-
-    fill(json) {
-        let data = []
-        let cellKinds = []
-        for (let j = 0; j < this.size; j++) {
-            for (let i = 0; i < this.size; i++) {
-                data[i] = json[i][j].value
-                cellKinds[i] = json[i][j].kind
-            }
-            this.cellKind[j] = cellKinds
-            this.cells[j] = data
-            data = []
-            cellKinds = []
-        }
-    }
-}
+//wird durch struct ersetzt
+// class Grid {
+//
+//     constructor(size) {
+//         this.size = size
+//         this.cells = []
+//         this.cellKind = []
+//     }
+//
+//     fill(json) {
+//         let data = []
+//         let cellKinds = []
+//         for (let j = 0; j < this.size; j++) {
+//             for (let i = 0; i < this.size; i++) {
+//                 data[i] = json[i][j].value
+//                 cellKinds[i] = json[i][j].kind
+//             }
+//             this.cellKind[j] = cellKinds
+//             this.cells[j] = data
+//             data = []
+//             cellKinds = []
+//         }
+//     }
+// }
 
 function updateGrid(grid) {
     let rows = $(".myRow")
@@ -272,9 +275,8 @@ function loadJson() {
 
         success: function (result) {
             let grid_size = Object.keys(result.gameField.grid.cells).length
-            let grid = new Grid(grid_size)
-            grid.fill(result.gameField.grid.cells)
-            updateGrid(grid)
+            My_grid.fill(result.gameField.grid.cells,grid_size)
+            updateGrid(My_grid)
             loadHand()
         }
     });
@@ -288,9 +290,8 @@ function loadJsonNewGrid() {
 
         success: function (result) {
             let grid_size = Object.keys(result.gameField.grid.cells).length
-            let grid = new Grid(grid_size)
-            grid.fill(result.gameField.grid.cells)
-            newGrid(grid)
+            My_grid.fill(result.gameField.grid.cells,grid_size)
+            newGrid(My_grid)
             loadHand()
         }
     });
@@ -304,9 +305,8 @@ function loadUndoGrid() {
 
         success: function (result) {
             let grid_size = Object.keys(result.gameField.grid.cells).length
-            let grid = new Grid(grid_size)
-            grid.fill(result.gameField.grid.cells)
-            undoGrid(grid)
+            My_grid.fill(result.gameField.grid.cells,grid_size)
+            undoGrid(My_grid)
             loadHand()
         }
     });
@@ -320,9 +320,8 @@ function loadRedoGrid() {
 
         success: function (result) {
             let grid_size = Object.keys(result.gameField.grid.cells).length
-            let grid = new Grid(grid_size)
-            grid.fill(result.gameField.grid.cells)
-            redoGrid(grid)
+            My_grid.fill(result.gameField.grid.cells,grid_size)
+            redoGrid(My_grid)
             loadHand()
         }
     });
@@ -515,33 +514,30 @@ function connectWebSocket() {
                 loadHand()
             } else if (res.Event === "InvalidEquation()") {
                 alert("Equation is not valid!")
-                let grid_size = Object.keys(res.gameField.grid.cells).length
-                let grid = new Grid(grid_size)
-                grid.fill(res.gameField.grid.cells)
-                newGrid(grid)
-                updateGrid(grid)
+                let grid_size = Object.keys(result.gameField.grid.cells).length
+                My_grid.fill(result.gameField.grid.cells,grid_size)
+                newGrid(My_grid)
+                updateGrid(My_grid)
                 loadHand()
             } else if (res.Event === "GameFieldChanged()") {
-                let grid_size = Object.keys(res.gameField.grid.cells).length
-                let grid = new Grid(grid_size)
-                grid.fill(res.gameField.grid.cells)
+                let grid_size = Object.keys(result.gameField.grid.cells).length
+                My_grid.fill(result.gameField.grid.cells,grid_size)
                 if (res.status === "fc") {
-                    newGrid(grid)
+                    newGrid(My_grid)
                 } else {
-                    newGrid(grid)
-                    updateGrid(grid)
+                    newGrid(My_grid)
+                    updateGrid(My_grid)
                 }
                 loadHand()
                 loadPoints()
             } else if (res.Event === "GridSizeChanged()") {
-                let grid_size = Object.keys(res.gameField.grid.cells).length
-                let grid = new Grid(grid_size)
-                grid.fill(res.gameField.grid.cells)
+                let grid_size = Object.keys(result.gameField.grid.cells).length
+                My_grid.fill(result.gameField.grid.cells,grid_size)
                 if (res.status === "fc") {
-                    newGrid(grid)
+                    newGrid(My_grid)
                     loadHand()
                 } else {
-                    newGrid(grid)
+                    newGrid(My_grid)
                     loadHand()
                 }
                 loadHand()
