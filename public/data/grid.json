@@ -1,0 +1,14 @@
+{
+  "grid" : {
+    "size": 9,
+    "cells": [{
+      "row": 0,
+      "col": 0,
+      "myCard": {
+        "value": 6,
+        "point": 1
+      }
+    }
+    ]
+  }
+}
