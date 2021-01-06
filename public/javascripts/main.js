@@ -51,6 +51,7 @@ function setCardcurrPlayer() {
             if (activerow[0]) {
                 let activeCard = active[1]
                 let url = "/scrabble/set/" + (activerow[1] - 1) + "/" + (i - 1) + "/" + activeCard
+                console.log(url)
                 $.ajax({
                     method: "GET",
                     url: url,
